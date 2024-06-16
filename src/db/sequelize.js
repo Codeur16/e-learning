@@ -14,7 +14,6 @@ const {
 const { domaine } = require("../models/domainModel");
 require("dotenv").config();
 
-
 // configuration de la base de donnees
 //let sequelize;
 // if (process.env.NODE_ENV === "production") {
@@ -98,15 +97,15 @@ require("dotenv").config();
 
 //let sequelize ;
 
-   const env=  process.env.NODE_ENV;
-   console.log("env:",env)         
+const env = process.env.NODE_ENV;
+console.log("env:", env);
 const sequelize = new Sequelize(
- "railway",
-  "root",
-   "qxvBWpZdfnvBmhWrEPYIykyTxfAIIDvT",
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
   {
-    host: "roundhouse.proxy.rlwy.net",
-    port:  "19854",
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     dialect: "mysql",
     logging: false,
   }
@@ -115,22 +114,20 @@ sequelize
   .authenticate()
   .then(() => {
     console.log("Connection has been established successfully.");
-    
+
     console.log("DB_NAME:", process.env.DB_NAME);
     console.log("DB_USER:", process.env.DB_USER);
     console.log("DB_PASS:", process.env.DB_PASS);
     console.log("DB_HOST:", process.env.DB_HOST);
     console.log("DB_PORT:", process.env.DB_PORT);
-
   })
   .catch((err) => {
     console.log("Unable to connect to the database:", err);
-     console.log("DB_NAME:", process.env.DB_NAME);
-     console.log("DB_USER:", process.env.DB_USER);
-     console.log("DB_PASS:", process.env.DB_PASS);
-     console.log("DB_HOST:", process.env.DB_HOST);
-     console.log("DB_PORT:", process.env.DB_PORT);
-
+    console.log("DB_NAME:", process.env.DB_NAME);
+    console.log("DB_USER:", process.env.DB_USER);
+    console.log("DB_PASS:", process.env.DB_PASS);
+    console.log("DB_HOST:", process.env.DB_HOST);
+    console.log("DB_PORT:", process.env.DB_PORT);
   });
 const DomainTable = domaine(sequelize, DataTypes);
 const CoursTable = cours(sequelize, DataTypes);
@@ -149,7 +146,7 @@ ChapitreTable.hasOne(EvaluationTable);
 EvaluationTable.belongsTo(ChapitreTable);
 
 //3)  evaluations et questions =============================
-EvaluationTable.hasMany( QuestionTable);
+EvaluationTable.hasMany(QuestionTable);
 QuestionTable.belongsTo(EvaluationTable);
 
 //4)  cours et domaines =============================
@@ -173,12 +170,12 @@ ChapitreTable.belongsTo(CoursTable);
 async function initDB() {
   console.log("Initialisation des tables de la base de données");
   try {
-    await sequelize
-      .sync({ force: true });
+    await sequelize.sync(
+//{ force: true }
+      );
     console.log("Tables have been created");
   } catch (error) {
     console.error("Unable to create tables:", error);
-    
   }
 }
 
