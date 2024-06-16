@@ -102,7 +102,7 @@ let sequelize;
    console.log("env:",env)
    if (env === 'production'){
      sequelize = new Sequelize(
-      "railwaiy",
+      "railway",
       "root",
       "qxvBWpZdfnvBmhWrEPYIykyTxfAIIDvT",
       {
