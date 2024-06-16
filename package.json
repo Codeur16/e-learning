@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "nodemon src/app.js",
-    "dev": "NODE_ENV=production node app.js"
+    "dev": "NODE_ENV=production node src/app.js"
   },
   "author": "codeur16",
   "license": "ISC",
