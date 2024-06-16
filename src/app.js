@@ -1,15 +1,16 @@
 const express =require ("express");
 const bodyParser = require("body-parser");
 const indexRouteur = require("../src/routes/indexRouter");
+require("dotenv").config();
 
 
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-
+app.use(express.json());
 //port
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 //init database
 const sequelize = require("./db/sequelize");
