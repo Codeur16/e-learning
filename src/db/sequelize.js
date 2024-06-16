@@ -99,14 +99,14 @@ require("dotenv").config();
 //let sequelize ;
 
    const env=  process.env.NODE_ENV;
-   console.log("env:",env)
+   console.log("env:",env)         
 const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASS,
+ "railway",
+  "root",
+   "qxvBWpZdfnvBmhWrEPYIykyTxfAIIDvT",
   {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+    host: "roundhouse.proxy.rlwy.net",
+    port:  "19854",
     dialect: "mysql",
     logging: false,
   }
