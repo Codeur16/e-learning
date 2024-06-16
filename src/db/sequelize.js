@@ -96,62 +96,42 @@ require("dotenv").config();
 
 // creation des models
 
-let sequelize ;
+//let sequelize ;
 
    const env=  process.env.NODE_ENV;
    console.log("env:",env)
-  if(env === "production"){
-    sequelize =  new Sequelize(
-      process.env.DB_NAME,
-      process.env.DB_USER ,
-      process.env.DB_PASS,
-      {
-        host: process.env.DB_HOST ,
-        port: process.env.DB_PORT,
-        dialect: "mysql",
-        logging: false,
-      }
-    );
-     sequelize
-       .authenticate()
-       .then(() => {
-         console.log("Connection has been established successfully.");
-       })
-       .catch((err) => {
-         console.log("Unable to connect to the database:", err);
-       });
-}
-else{
-//  const  sequelize = new Sequelize("institute", "root", "",
-//     {
-//       host:  "localhost",
-//       port: "3306",
-//       dialect: "mariadb",
-//       logging: false,
-//     }
-//   );
- sequelize = new Sequelize(
-   process.env.DB_NAME ,
-   process.env.DB_USER,
-   process.env.DB_PASS,
-   {
-     host: process.env.DB_HOST,
-     port: process.env.DB_PORT,
-     dialect: "mariadb",
-     logging: false,
-   }
- );
-  sequelize
-    .authenticate()
-    .then(() => {
-      console.log("Connection has been established successfully.");
-    })
-    .catch((err) => {
-      console.log("Unable to connect to the database:", err);
-    });
- 
-}
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: "mysql",
+    logging: false,
+  }
+);
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+    
+    console.log("DB_NAME:", process.env.DB_NAME);
+    console.log("DB_USER:", process.env.DB_USER);
+    console.log("DB_PASS:", process.env.DB_PASS);
+    console.log("DB_HOST:", process.env.DB_HOST);
+    console.log("DB_PORT:", process.env.DB_PORT);
 
+  })
+  .catch((err) => {
+    console.log("Unable to connect to the database:", err);
+     console.log("DB_NAME:", process.env.DB_NAME);
+     console.log("DB_USER:", process.env.DB_USER);
+     console.log("DB_PASS:", process.env.DB_PASS);
+     console.log("DB_HOST:", process.env.DB_HOST);
+     console.log("DB_PORT:", process.env.DB_PORT);
+
+  });
 const DomainTable = domaine(sequelize, DataTypes);
 const CoursTable = cours(sequelize, DataTypes);
 const EvaluationTable = evaluation(sequelize, DataTypes);
