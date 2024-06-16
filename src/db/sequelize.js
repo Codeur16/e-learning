@@ -1,4 +1,5 @@
 const { Sequelize, DataTypes } = require("sequelize");
+const dbConfig = require("../configs/db.config");
 // const bcrypt = require("bcrypt");
 
 // importation des models
@@ -12,22 +13,49 @@ const {
 } = require("../models/coursModel");
 const { domaine } = require("../models/domainModel");
 
+module.exports = {
+  HOST: "mysql-175874-0.cloudclusters.net", // L'adresse du serveur de base de données CloudClusters
+  USER: "admin", // Votre nom d'utilisateur
+  PASSWORD: "ZgIFimc4", // Votre mot de passe
+  DB: "institute", // Le nom de votre base de données
+  dialect: "mysql", // Le dialecte de la base de données (mysql pour MySQL)
+  dialectOptions: {
+    connectTimeout: 60000, // 60 seconds
+  },
+  url: "mysql -h mysql-175874-0.cloudclusters.net -P 10002 -u admin -p",
+};
+
+
 // configuration de la base de donnees
 let sequelize;
 if (process.env.NODE_ENV === "production") {
-  sequelize = new Sequelize(
-    "q3km6gfiypm99yap",
-    "fmjzknms6lf6acih",
-    "mpe1lmb1jci8jwzx",
-    {
-      host: "ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-      dialect: "mariadb",
-      dialectOptions: {
-        timezone: "Etc/GMT-1",
-      },
-      logging: true,
-    }
-  );
+  // sequelize = new Sequelize(
+  //   "q3km6gfiypm99yap",
+  //   "fmjzknms6lf6acih",
+  //   "mpe1lmb1jci8jwzx",
+  //   {
+  //     host: "ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+  //     dialect: "mariadb",
+  //     dialectOptions: {
+  //       timezone: "Etc/GMT-1",
+  //     },
+  //     logging: true,
+  //   }
+  // );
+  sequelize = new Sequelize("institute", "admin", "ZgIFimc4", {
+    dialect: "mysql",
+    host: "mysql-175874-0.cloudclusters.net",
+    port: 10002,
+  });
+
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log("Connection has been established successfully.");
+    })
+    .catch((err) => {
+      console.log("Unable to connect to the database:", err);
+    });
 } else {
   // sequelize = new Sequelize({
   //   dialect: "sqlite",
@@ -35,19 +63,49 @@ if (process.env.NODE_ENV === "production") {
   // });
 
   // connection a la db en local
-  sequelize = new Sequelize("institute", "root", "", {
-    host: "localhost",
-    dialect: "mariadb",
-    dialectOptions: {
-      timezone: "Etc/GMT-1",
-    },
-    logging: false,
-    define: {
-      maxKeys: 200,
-    },
-  });
-}
+  // sequelize = new Sequelize("institute", "root", "", {
+  //   host: "localhost",
+  //   dialect: "mariadb",
+  //   dialectOptions: {
+  //     timezone: "Etc/GMT-1",
+  //   },
+  //   logging: false,
+  //   define: {
+  //     maxKeys: 200,
+  //   },
+  // });
 
+  
+    sequelize = new Sequelize("institute", "admin", "ZgIFimc4", {
+      dialect: "mysql",
+      host: "mysql-175874-0.cloudclusters.net",
+      port: 10002,
+    });
+
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log("Connection has been established successfully.");
+    })
+    .catch((err) => {
+      console.log("Unable to connect to the database:", err);
+    });
+// sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+//   host: dbConfig.HOST,
+//   dialect: dbConfig.dialect,
+//   pool: dbConfig.pool,
+//   dialectOptions: dbConfig.dialectOptions,
+//   logging: false, // Désactiver les logs de Sequelize ou utiliser une fonction de log personnalisée
+// });
+}
+// Test de la connexion à la base de données
+sequelize.authenticate()
+  .then(() => {
+    console.log("Connection to the database has been established successfully.");
+  })
+  .catch((error) => {
+    console.error("Unable to connect to the database:", error);
+  });
 // creation des models
 const DomainTable = domaine(sequelize, DataTypes);
 const CoursTable = cours(sequelize, DataTypes);
