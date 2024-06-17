@@ -11,12 +11,15 @@ const StudentRouter = require("./StudentRouter");
 const FormateurRouter = require("./FormateurRouter");
 const CoursRouteur = require("./CoursRouteur");
 const EvaluationRouter = require("./EvaluationRouter");
-const DomainRouteur = require("./DomainRouteur")
+const DomainRouteur = require("./DomainRouteur");
+const SujetRouteur = require("./SujetRouter");
 
 router.use("/student", StudentRouter);
 router.use("/formateur", FormateurRouter);
 router.use("/cours", CoursRouteur);
 router.use("/evaluation", EvaluationRouter);
 router.use("/domain", DomainRouteur);
+router.use("/sujet", SujetRouteur);
 
 module.exports = router;
+      

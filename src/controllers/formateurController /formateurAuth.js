@@ -15,7 +15,7 @@ const FormateurRegistration = (req, res) => {
     !role ||
     !password
   ) {
-    return res.status(400).json({
+    return res.status(201).json({
       message: "Veuillez remplir tous les champs.",
     });
   }
@@ -37,7 +37,7 @@ const FormateurRegistration = (req, res) => {
     })
     .catch((err) => {
       if (err instanceof ValidationError) {
-        return res.status(400).json({ message: err.message, data: err });
+        return res.status(201).json({ message: err.message, data: err });
       }
       res.status(500).json({
         message: "Erreur lors de l'ajout d'un user! Reessayer plus tard",
@@ -52,14 +52,14 @@ const FormateurLogin = (req, res) => {
     .then((Formateur) => {
       if (!Formateur) {
         const message = "le formateur demandé est inexistant";
-        return res.status(404).json({ message });
+        return res.status(201).json({ message });
       } else {
         bcrypt
           .compare(req.body.password, Formateur.password)
           .then((isPasswordValid) => {
             if (!isPasswordValid) {
               const message = "Le mot de passe est incorrect!";
-              return res.status(401).json({ message });
+              return res.status(201).json({ message });
             }
             // JWT
             // const token = jwt.sign(

@@ -81,7 +81,7 @@ if (env === "production") {
       console.log("DB_PORT:", process.env.DB_PORT);
     });
 }
-const DomainTable = domaine(sequelize, DataTypes);
+const DomaineTable = domaine(sequelize, DataTypes);
 const SujetTable = sujet(sequelize, DataTypes);
 const CoursTable = cours(sequelize, DataTypes);
 const EvaluationTable = evaluation(sequelize, DataTypes);
@@ -110,23 +110,23 @@ CoursTable.belongsTo(SujetTable);
 FormateurTable.hasMany(CoursTable);
 CoursTable.belongsTo(FormateurTable);
 
-//6)  cours et formateur =============================
-FormateurTable.hasMany(SujetTable);
-SujetTable.belongsTo(FormateurTable);
-
+//6)  domain   et formateur =============================
+DomaineTable.hasMany(FormateurTable);
+FormateurTable.belongsTo(DomaineTable);
+      
 //7)  cours et chapitres =============================
 CoursTable.hasMany(ChapitreTable);
 ChapitreTable.belongsTo(CoursTable);   
 // 8) sujet et domain
-DomainTable.hasMany(SujetTable);
-SujetTable.belongsTo(DomainTable);
+DomaineTable.hasMany(SujetTable);
+SujetTable.belongsTo(DomaineTable);         
 //association de la baase de donnees
 
 async function initDB() {
   console.log("Initialisation des tables de la base de données");
   try {
     await sequelize.sync(
-      { force: true }
+      { alter: true }
       );
     console.log("Tables have been created");
   } catch (error) {
@@ -141,8 +141,9 @@ module.exports = {
   CoursTable,
   QuestionTable,
   StudentTable,
-  DomainTable,
+  DomaineTable,
   FormateurTable,
+  SujetTable,
 };
 
 // .then(_=>{

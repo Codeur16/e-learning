@@ -37,7 +37,7 @@ const StudentRegistration = (req, res) => {
     })
     .catch((err) => {
       if (err instanceof ValidationError) {
-        return res.status(400).json({ message: err.message, data: err });
+        return res.status(201).json({ message: err.message, data: err });
       }
       res.status(500).json({
         message: "Erreur lors de l'ajout d'un user! Reessayer plus tard",
@@ -52,14 +52,14 @@ const StudentLogin = (req, res) => {
     .then((student) => {
       if (!student) {
         const message = "l'utilisateur demandé est inexistant";
-        return res.status(404).json({ message });
+        return res.status(201).json({ message });
       } else {
         bcrypt
           .compare(req.body.password, student.password)
           .then((isPasswordValid) => {
             if (!isPasswordValid) {
               const message = "Le mot de passe est incorrect!";
-              return res.status(401).json({ message });
+              return res.status(201).json({ message });
             }
             // JWT
             // const token = jwt.sign(

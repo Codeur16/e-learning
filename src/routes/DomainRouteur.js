@@ -1,8 +1,10 @@
-const {getAllDomaines,
-  getDomaineById,
+const {
   createDomaine,
+  getAllDomaines,
+  getDomaineById,
   updateDomaine,
-  deleteDomaine,} = require("../controllers/domainControllers/domainControllers")
+  deleteDomaine,
+} = require("../controllers/domainControllers/domainControllers");
 
     const express = require("express");
   const router = express.Router();
