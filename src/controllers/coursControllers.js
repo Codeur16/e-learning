@@ -125,10 +125,36 @@ const deleteCours = async (req, res) => {
   }
 };
 
+
+const getCoursBySujetId = async (req, res) => {
+  const sujetId = req.params.sujetId;
+
+  try {
+    const sujet = await SujetTable.findByPk(sujetId, {
+      include: [
+        {
+          model: CoursTable,
+          as: "cours",
+        },
+      ],
+    });
+
+    if (!sujet) {
+      return sendResponse(res, 201, "Sujet non trouvé");
+    }
+
+    const message = "Cours récupérés avec succès";
+    sendResponse(res, 200, message, sujet.cours);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des cours :", error);
+    sendResponse(res, 500, "Erreur lors de la récupération des cours", error);
+  }
+};
 module.exports = {
   getAllCours,
   getCoursById,
   createCours,
   updateCours,
   deleteCours,
+  getCoursBySujetId
 };

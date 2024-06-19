@@ -1,13 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const indexRouteur = require("../src/routes/indexRouter");
-const swaggerFile = require("./swagger");
+const { swaggerDocs } = require("./swagger");
 require("dotenv").config();
 
- const swaggerJsdoc = require ( "swagger-jsdoc" );
-  const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 //const favicon = require("serve-favicon");
-const cors = require("cors");      
+const cors = require("cors");
 require("events").EventEmitter.defaultMaxListeners = 35;
 const app = express();
 
@@ -44,8 +44,8 @@ app.get("/", (req, res) => {
 });
 
 //Routage
-app.use("/api", indexRouteur);
-
+app.use(indexRouteur);
+swaggerDocs(app, port);
 // Ajoute le gestion d'erreur 404
 app.use(({ res }) => {
   const message =
@@ -53,8 +53,7 @@ app.use(({ res }) => {
   res.status(404).json(message);
 });
 
-
-// configuration du swqgger  
+// configuration du swqgger
 
 const options = {
   swaggerDefinition: {
@@ -70,7 +69,7 @@ const options = {
         description: "Development server",
       },
     ],
-  }, 
+  },
   apis: ["./routes/*.js"], // Spécifiez ici le chemin vers vos fichiers de routes
 };
 

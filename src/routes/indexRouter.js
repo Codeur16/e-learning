@@ -16,13 +16,13 @@ const SujetRouteur = require("./SujetRouter");
 const ChapitreRouteur = require("./ChapitreRouter");
 const LoginRouteur = require("./loginRouter");
 
-router.use("/student", StudentRouter);
-router.use("/formateur", FormateurRouter);
-router.use("/cours", CoursRouteur);
-router.use("/evaluation", EvaluationRouter);
-router.use("/domain", DomainRouteur);
-router.use("/sujet", SujetRouteur);
-router.use("/chapitre", ChapitreRouteur);
-router.use("/user", LoginRouteur);
+router.use("/api/student", StudentRouter);
+router.use("/api/formateur", FormateurRouter);
+router.use("/api/cours", CoursRouteur);
+router.use("/api/evaluation", EvaluationRouter);
+router.use("/api/domain", DomainRouteur);
+router.use("/api/sujet", SujetRouteur);
+router.use("/api/chapitre", ChapitreRouteur);
+router.use("/api/user", LoginRouteur);
 
 module.exports = router;

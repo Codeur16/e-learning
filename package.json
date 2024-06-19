@@ -23,13 +23,13 @@
     "sequelize": "^6.37.3",
     "serve-favicon": "^2.5.0",
     "sqlite3": "^5.1.7",
-    "swagger-autogen": "^2.23.7",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-autogen": "^2.23.7"
   },
   "devDependencies": {
     "@types/node": "^20.12.13",
-    "nodemon": "^3.1.2"
+    "nodemon": "^3.1.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "repository": {
     "type": "git",

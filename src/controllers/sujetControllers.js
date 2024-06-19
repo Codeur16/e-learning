@@ -1,4 +1,4 @@
-const { SujetTable, DomaineTable } = require("../db/sequelize"); // Assurez-vous que le chemin est correct
+const { SujetTable, DomaineTable, CoursTable } = require("../db/sequelize"); // Assurez-vous que le chemin est correct
 
 const sendResponse = (res, statusCode, message, data = null) => {
   res.status(statusCode).json({ message, data });
@@ -128,6 +128,8 @@ const deleteSujet = async (req, res) => {
     );
   }
 };
+
+
 
 module.exports = {
   createSujet,
