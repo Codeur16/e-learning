@@ -3,20 +3,20 @@ const bcrypt = require("bcrypt");
 const { FormateurTable, DomaineTable } = require("../db/sequelize");
 const { join } = require("path");
 
-const sendResponse = (res, statusCode, message, data = null) => {
-  res.status(statusCode).json({ message, data });
+const sendResponse = (res, statusCode, messdateNaissance, data = null) => {
+  res.status(statusCode).json({ messdateNaissance, data });
 };
 
 const FormateurRegistration = async (req, res) => {
   const idDomaine = req.params.iddomaine;
-  const { nom, prenom, age, email, preference, sexe, role, password, cv } =
+  const { nom, prenom, dateNaissance, email, preference, sexe, role, password, cv } =
     req.body;
   console.log("req.body:", req.body);
 
   if (
     !nom ||
     !prenom ||
-    !age ||
+    !dateNaissance ||
     !email ||
     !preference ||
     !sexe ||
@@ -37,7 +37,7 @@ const FormateurRegistration = async (req, res) => {
     const newFormateur = {
       nom,
       prenom,
-      age,
+      dateNaissance,
       email,
       preference,
       sexe,
@@ -48,11 +48,11 @@ const FormateurRegistration = async (req, res) => {
     };
 
     const createdFormateur = await FormateurTable.create(newFormateur);
-    const message = `Le formateur ${req.body.nom} a bien été créé`;
-    sendResponse(res, 201, message, createdFormateur);
+    const messdateNaissance = `Le formateur ${req.body.nom} a bien été créé`;
+    sendResponse(res, 201, messdateNaissance, createdFormateur);
   } catch (err) {
     if (err instanceof ValidationError) {
-      return sendResponse(res, 400, err.message, err);
+      return sendResponse(res, 201, err.messdateNaissance, err);
     }
     sendResponse(
       res,
@@ -80,11 +80,11 @@ const FormateurLogin = async (req, res) => {
       return sendResponse(res, 201, "Le mot de passe est incorrect!");
     }
 
-    const message = "Le formateur a été connecté avec succès!";
-    sendResponse(res, 200, message, Formateur);
+    const messdateNaissance = "Le formateur a été connecté avec succès!";
+    sendResponse(res, 200, messdateNaissance, Formateur);
   } catch (err) {
-    const message = "La connexion a échoué! Réessayez dans quelques instants";
-    sendResponse(res, 500, message, err);
+    const messdateNaissance = "La connexion a échoué! Réessayez dans quelques instants";
+    sendResponse(res, 500, messdateNaissance, err);
   }
 };
 
@@ -95,8 +95,8 @@ const deleteFormateur = async (req, res) => {
       where: { formateurId: req.params.id },
     });
     if (deleted) {
-      const message = "Le formateur a été supprimé avec succès";
-      sendResponse(res, 200, message);
+      const messdateNaissance = "Le formateur a été supprimé avec succès";
+      sendResponse(res, 200, messdateNaissance);
     } else {
       sendResponse(res, 201, "Le formateur demandé est inexistant");
     }
@@ -113,14 +113,14 @@ const updateFormateur = async (req, res) => {
     });
     if (updated) {
       const updatedFormateur = await FormateurTable.findByPk(req.params.id);
-      const message = "Le formateur a été mis à jour avec succès";
-      sendResponse(res, 200, message, updatedFormateur);
+      const messdateNaissance = "Le formateur a été mis à jour avec succès";
+      sendResponse(res, 200, messdateNaissance, updatedFormateur);
     } else {
       sendResponse(res, 201, "Le formateur demandé est inexistant");
     }
   } catch (err) {
     if (err instanceof ValidationError) {
-      return sendResponse(res, 400, err.message, err);
+      return sendResponse(res, 400, err.messdateNaissance, err);
     }
     sendResponse(res, 500, "Erreur lors de la mise à jour du formateur", err);
   }

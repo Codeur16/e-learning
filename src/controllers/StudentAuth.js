@@ -7,12 +7,12 @@ const sendResponse = (res, statusCode, message, data = null) => {
 };
 
 const StudentRegistration = async (req, res) => {
-  const { nom, prenom, age, email, preference, sexe, role, password } =
+  const { nom, prenom, dateNaissance, email, preference, sexe, role, password } =
     req.body;
   if (
     !nom ||
     !prenom ||
-    !age ||
+    !dateNaissance ||
     !email ||
     !preference ||
     !sexe ||
@@ -27,7 +27,7 @@ const StudentRegistration = async (req, res) => {
     const newStudent = {
       nom,
       prenom,
-      age,
+      dateNaissance,
       email,
       preference,
       sexe,
@@ -40,7 +40,7 @@ const StudentRegistration = async (req, res) => {
     sendResponse(res, 201, message, createdStudent);
   } catch (err) {
     if (err instanceof ValidationError) {
-      return sendResponse(res, 400, err.message, err);
+      return sendResponse(res, 201, err.message, err);
     }
     sendResponse(
       res,
