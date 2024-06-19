@@ -19,7 +19,7 @@ const StudentRegistration = async (req, res) => {
     !role ||
     !password
   ) {
-    return sendResponse(res, 400, "Veuillez remplir tous les champs.");
+    return sendResponse(res, 201, "Veuillez remplir tous les champs.");
   }
 
   try {
@@ -50,7 +50,6 @@ const StudentRegistration = async (req, res) => {
     );
   }
 };
-    
 
 const StudentLogin = async (req, res) => {
   const email = req.body.email;
@@ -58,7 +57,7 @@ const StudentLogin = async (req, res) => {
   try {
     const student = await StudentTable.findOne({ where: { email: email } });
     if (!student) {
-      return sendResponse(res, 404, "L'utilisateur demandé est inexistant");
+      return sendResponse(res, 201, "L'utilisateur demandé est inexistant");
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -66,7 +65,7 @@ const StudentLogin = async (req, res) => {
       student.password
     );
     if (!isPasswordValid) {
-      return sendResponse(res, 400, "Le mot de passe est incorrect!");
+      return sendResponse(res, 201, "Le mot de passe est incorrect!");
     }
 
     const message = "L'utilisateur a été connecté avec succès!";
@@ -77,16 +76,17 @@ const StudentLogin = async (req, res) => {
   }
 };
 
-
 // Supprimer un étudiant
 const deleteStudent = async (req, res) => {
   try {
-    const deleted = await StudentTable.destroy({ where: { studentId: req.params.id } });
+    const deleted = await StudentTable.destroy({
+      where: { studentId: req.params.id },
+    });
     if (deleted) {
       const message = "L'étudiant a été supprimé avec succès";
       sendResponse(res, 200, message);
     } else {
-      sendResponse(res, 404, "L'étudiant demandé est inexistant");
+      sendResponse(res, 201, "L'étudiant demandé est inexistant");
     }
   } catch (err) {
     sendResponse(res, 500, "Erreur lors de la suppression de l'étudiant", err);
@@ -96,13 +96,15 @@ const deleteStudent = async (req, res) => {
 // Mettre à jour un étudiant
 const updateStudent = async (req, res) => {
   try {
-    const [updated] = await StudentTable.update(req.body, { where: { studentId: req.params.id } });
+    const [updated] = await StudentTable.update(req.body, {
+      where: { studentId: req.params.id },
+    });
     if (updated) {
       const updatedStudent = await StudentTable.findByPk(req.params.id);
       const message = "L'étudiant a été mis à jour avec succès";
       sendResponse(res, 200, message, updatedStudent);
     } else {
-      sendResponse(res, 404, "L'étudiant demandé est inexistant");
+      sendResponse(res, 201, "L'étudiant demandé est inexistant");
     }
   } catch (err) {
     if (err instanceof ValidationError) {
@@ -119,7 +121,7 @@ const getStudentById = async (req, res) => {
     if (student) {
       sendResponse(res, 200, "Étudiant récupéré avec succès", student);
     } else {
-      sendResponse(res, 404, "L'étudiant demandé est inexistant");
+      sendResponse(res, 201, "L'étudiant demandé est inexistant");
     }
   } catch (err) {
     sendResponse(res, 500, "Erreur lors de la récupération de l'étudiant", err);
@@ -135,7 +137,6 @@ const getAllStudents = async (req, res) => {
     sendResponse(res, 500, "Erreur lors de la récupération des étudiants", err);
   }
 };
-
 
 module.exports = {
   StudentRegistration,

@@ -24,13 +24,13 @@ const FormateurRegistration = async (req, res) => {
     !password ||
     !cv
   ) {
-    return sendResponse(res, 404, "Veuillez remplir tous les champs.");
+    return sendResponse(res, 201, "Veuillez remplir tous les champs.");
   }
 
   try {
     const domaine = await DomaineTable.findByPk(idDomaine);
     if (!domaine) {
-      return sendResponse(res, 404, "Domaine inexistant");
+      return sendResponse(res, 201, "Domaine inexistant");
     }
 
     const hash = bcrypt.hashSync(password, 10);
@@ -69,7 +69,7 @@ const FormateurLogin = async (req, res) => {
   try {
     const Formateur = await FormateurTable.findOne({ where: { email: email } });
     if (!Formateur) {
-      return sendResponse(res, 404, "Le formateur demandé est inexistant");
+      return sendResponse(res, 201, "Le formateur demandé est inexistant");
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -77,7 +77,7 @@ const FormateurLogin = async (req, res) => {
       Formateur.password
     );
     if (!isPasswordValid) {
-      return sendResponse(res, 400, "Le mot de passe est incorrect!");
+      return sendResponse(res, 201, "Le mot de passe est incorrect!");
     }
 
     const message = "Le formateur a été connecté avec succès!";
@@ -98,7 +98,7 @@ const deleteFormateur = async (req, res) => {
       const message = "Le formateur a été supprimé avec succès";
       sendResponse(res, 200, message);
     } else {
-      sendResponse(res, 404, "Le formateur demandé est inexistant");
+      sendResponse(res, 201, "Le formateur demandé est inexistant");
     }
   } catch (err) {
     sendResponse(res, 500, "Erreur lors de la suppression du formateur", err);
@@ -116,7 +116,7 @@ const updateFormateur = async (req, res) => {
       const message = "Le formateur a été mis à jour avec succès";
       sendResponse(res, 200, message, updatedFormateur);
     } else {
-      sendResponse(res, 404, "Le formateur demandé est inexistant");
+      sendResponse(res, 201, "Le formateur demandé est inexistant");
     }
   } catch (err) {
     if (err instanceof ValidationError) {
@@ -133,7 +133,7 @@ const getFormateurById = async (req, res) => {
     if (formateur) {
       sendResponse(res, 200, "Formateur récupéré avec succès", formateur);
     } else {
-      sendResponse(res, 404, "Le formateur demandé est inexistant");
+      sendResponse(res, 201, "Le formateur demandé est inexistant");
     }
   } catch (err) {
     sendResponse(res, 500, "Erreur lors de la récupération du formateur", err);

@@ -19,7 +19,7 @@ const UserLogin = async (req, res) => {
     }
 
     if (!user) {
-      return sendResponse(res, 404, "L'utilisateur demandé est inexistant");
+      return sendResponse(res, 201, "L'utilisateur demandé est inexistant");
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -27,7 +27,7 @@ const UserLogin = async (req, res) => {
       user.password
     );
     if (!isPasswordValid) {
-      return sendResponse(res, 400, "Le mot de passe est incorrect!");
+      return sendResponse(res, 201, "Le mot de passe est incorrect!");
     }
 
     const message = `${userType} a été connecté avec succès!`;
