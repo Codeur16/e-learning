@@ -2,6 +2,7 @@ const {
   CoursTable,
   FormateurTable,
   SujetTable,
+  StudentTable,
 } = require("../db/sequelize");
 
 const sendResponse = (res, statusCode, message, data = null) => {
@@ -10,15 +11,20 @@ const sendResponse = (res, statusCode, message, data = null) => {
 
 const getAllCours = async (req, res) => {
   try {
-    const cours = await CoursTable.findAll({ include: [
+    const cours = await CoursTable.findAll({
+      include: [
         {
           model: SujetTable,
           as: "sujets",
         },
         {
-          model:FormateurTable,
-          as:"formateurs"
-        }
+          model: FormateurTable,
+          as: "formateurs",
+        },
+        {
+          model: StudentTable, // Ajoutez ceci pour inclure la table des étudiants
+          //as: "etudiants", // Donnez un alias à la relation avec les étudiants
+        },
       ],
     });
     console.log("Tous les cours ont été récupérés avec succès");
@@ -36,15 +42,20 @@ const getAllCours = async (req, res) => {
 
 const getCoursById = async (req, res) => {
   try {
-    const cours = await CoursTable.findByPk(req.params.id,{ include: [
+    const cours = await CoursTable.findByPk(req.params.id, {
+      include: [
         {
           model: SujetTable,
           as: "sujets",
         },
         {
-          model:FormateurTable,
-          as:"formateurs"
-        }
+          model: FormateurTable,
+          as: "formateurs",
+        },
+        {
+          model: StudentTable, // Ajoutez ceci pour inclure la table des étudiants
+          //as: "etudiants", // Donnez un alias à la relation avec les étudiants
+        },
       ],
     });
     if (cours) {
@@ -74,7 +85,7 @@ const createCours = async (req, res) => {
     if (!sujet) {
       return sendResponse(res, 201, "Sujet inexistant");
     }
-        
+
     const cours = await CoursTable.create({
       ...req.body,
       sujetId: sujetId,
@@ -125,7 +136,6 @@ const deleteCours = async (req, res) => {
   }
 };
 
-
 const getCoursBySujetId = async (req, res) => {
   const sujetId = req.params.sujetId;
 
@@ -136,6 +146,11 @@ const getCoursBySujetId = async (req, res) => {
           model: CoursTable,
           as: "cours",
         },
+       
+
+        // {
+        //   model: StudentTable,
+        // },
       ],
     });
 
@@ -150,11 +165,61 @@ const getCoursBySujetId = async (req, res) => {
     sendResponse(res, 500, "Erreur lors de la récupération des cours", error);
   }
 };
+const getStudentCountByCoursId = async (req, res) => {
+  const coursId = req.params.coursId;
+
+  try {
+    const cours = await CoursTable.findByPk(coursId, {
+      include: [
+        {
+          model: SujetTable,
+          as: "sujets",
+        },
+        {
+          model: FormateurTable,
+          as: "formateurs",
+        },
+        {
+          model: StudentTable, // Ajoutez ceci pour inclure la table des étudiants
+          //as: "etudiants", // Donnez un alias à la relation avec les étudiants
+        },
+      ],
+    });
+    if (cours) {
+      console.log("Cours récupéré avec succès");
+      let studentCount = 0; // Déclarez studentCount avec let au lieu de const
+      if (cours.students) {
+        studentCount = cours.students.length;
+        const message = `Le cours avec l'ID ${coursId} a ${studentCount} étudiant(s) inscrit(s).`;
+        return sendResponse(res, 200, message, { studentCount });
+      }
+
+      sendResponse(res, 200, "aucun eleve inscrit");
+    } else {
+      console.log("Cours introuvable");
+      sendResponse(res, 201, "Cours introuvable");
+    }
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération du nombre d'étudiants :",
+      error
+    );
+    sendResponse(
+      res,
+      500,
+      "Erreur lors de la récupération du nombre d'étudiants",
+      error
+    );
+  }
+};
+
+
 module.exports = {
   getAllCours,
   getCoursById,
   createCours,
   updateCours,
   deleteCours,
-  getCoursBySujetId
+  getCoursBySujetId,
+  getStudentCountByCoursId,
 };
