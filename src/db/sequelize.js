@@ -186,7 +186,9 @@ SujetTable.belongsTo(DomaineTable, {
 async function initDB() {
   console.log("Initialisation des tables de la base de données");
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync(
+      //{ force: true }
+      );
     console.log("Tables have been created");
   } catch (error) {
     console.error("Unable to create tables:", error);
