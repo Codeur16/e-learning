@@ -1,12 +1,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const indexRouteur = require("../src/routes/indexRouter");
+const swaggerFile = require("./swagger");
 require("dotenv").config();
+
+ const swaggerJsdoc = require ( "swagger-jsdoc" );
+  const swaggerUi = require("swagger-ui-express");
 //const favicon = require("serve-favicon");
-const cors = require("cors");
+const cors = require("cors");      
 require("events").EventEmitter.defaultMaxListeners = 35;
 const app = express();
-
 
 app.use(function (req, res, next) {
   //Enabling CORS
@@ -21,10 +24,10 @@ app.use(function (req, res, next) {
 //app.use(favicon(__dirname + "/favicon.ico"));
 app.use(bodyParser.json());
 app
-//  .use(favicon(__dirname + "/favicon.ico"))
+  //  .use(favicon(__dirname + "/favicon.ico"))
   .use(cors())
 
-  .use(bodyParser.json()); 
+  .use(bodyParser.json());
 // Middleware
 app.use(bodyParser.json());
 app.use(express.json());
@@ -50,6 +53,38 @@ app.use(({ res }) => {
   res.status(404).json(message);
 });
 
+
+// configuration du swqgger  
+
+const options = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "API Documentation",
+      version: "1.0.0",
+      description: "Documentation for your API",
+    },
+    servers: [
+      {
+        url: "http://localhost:3001",
+        description: "Development server",
+      },
+    ],
+  }, 
+  apis: ["./routes/*.js"], // Spécifiez ici le chemin vers vos fichiers de routes
+};
+
+//const swaggerSpec = swaggerJSDoc(options);
+const specs = swaggerJsdoc(options);
+/**
+ * Configuration Swagger, exposition de la doc sur la route /doc
+ */
+// app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
+// // catch 404 and forward to error handler
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 // Demarrage du serveur;
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);

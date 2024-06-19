@@ -14,7 +14,6 @@ const {
 const { domaine, sujet } = require("../models/domainModel");
 require("dotenv").config();
 
-
 let sequelize;
 const env = process.env.NODE_ENV;
 console.log("env:", env);
@@ -91,42 +90,104 @@ const FormateurTable = formateur(sequelize, DataTypes);
 const ChapitreTable = chapitre(sequelize, DataTypes);
 //======================== definition des associations entre les tables:======================================
 // 1) cours et users ========================================
-CoursTable.belongsToMany(StudentTable, { through: "UserCours" });
-StudentTable.belongsToMany(CoursTable, { through: "UserCours" });
+CoursTable.belongsToMany(StudentTable, {
+  through: "UserCours",
+  onDelete: "CASCADE",
+});
+StudentTable.belongsToMany(CoursTable, {
+  through: "UserCours",
+  onDelete: "CASCADE",
+});
 
 // 2) cours et evaluations================================
-ChapitreTable.hasOne(EvaluationTable);
-EvaluationTable.belongsTo(ChapitreTable);
+ChapitreTable.hasOne(EvaluationTable, {
+  as: "evaluations",
+  foreignKey: "chapitreId",
+  onDelete: "CASCADE",
+});
+EvaluationTable.belongsTo(ChapitreTable, {
+  as: "chapitres",
+  foreignKey: "chapitreId",
+  onDelete: "CASCADE",
+});
 
 //3)  evaluations et questions =============================
-EvaluationTable.hasMany(QuestionTable);
-QuestionTable.belongsTo(EvaluationTable);
+EvaluationTable.hasMany(QuestionTable, {
+  as: "questions",
+  foreignKey: "evaluationId",
+  onDelete: "CASCADE",
+});
+QuestionTable.belongsTo(EvaluationTable, {
+  as: "evaluations",
+  foreignKey: "evaluationId",
+  onDelete: "CASCADE",
+});
 
 //4)  cours et domaines =============================
-SujetTable.hasMany(CoursTable);
-CoursTable.belongsTo(SujetTable);
+SujetTable.hasMany(CoursTable, {
+  as: "cours",
+  foreignKey: "sujetId",
+  onDelete: "CASCADE",
+});
+CoursTable.belongsTo(SujetTable, {
+  as: "sujets",
+  foreignKey: "sujetId",
+  onDelete: "CASCADE",
+});
 
 //5)  cours et formateur =============================
-FormateurTable.hasMany(CoursTable);
-CoursTable.belongsTo(FormateurTable);
+FormateurTable.hasMany(CoursTable, {
+  as: "cours",
+  foreignKey: "formateurId",
+  onDelete: "CASCADE",
+});
+CoursTable.belongsTo(FormateurTable, {
+  as: "formateurs",
+  foreignKey: "formateurId",
+  onDelete: "CASCADE",
+});
 
 //6)  domain   et formateur =============================
-DomaineTable.hasMany(FormateurTable);
-FormateurTable.belongsTo(DomaineTable);
-      
+DomaineTable.hasMany(FormateurTable, {
+  as: "formateurs",
+  foreignKey: "domaineId",
+  onDelete: "CASCADE",
+});
+FormateurTable.belongsTo(DomaineTable, {
+  as: "domaines",
+  foreignKey: "domaineId",
+  onDelete: "CASCADE",
+});
+
 //7)  cours et chapitres =============================
-CoursTable.hasMany(ChapitreTable);
-ChapitreTable.belongsTo(CoursTable);   
+CoursTable.hasMany(ChapitreTable, {
+  as: "chapitres",
+  foreignKey: "coursId",
+  onDelete: "CASCADE",
+});
+ChapitreTable.belongsTo(CoursTable, {
+  as: "cours",
+  foreignKey: "coursId",
+  onDelete: "CASCADE",
+});
 // 8) sujet et domain
-DomaineTable.hasMany(SujetTable);
-SujetTable.belongsTo(DomaineTable);         
+DomaineTable.hasMany(SujetTable, {
+  as: "sujets",
+  foreignKey: "domaineId",
+  onDelete: "CASCADE",
+});
+SujetTable.belongsTo(DomaineTable, {
+  as: "domaines",
+  foreignKey: "domaineId",
+  onDelete: "CASCADE",
+});
 //association de la baase de donnees
 
 async function initDB() {
   console.log("Initialisation des tables de la base de données");
   try {
     await sequelize.sync(
-      { alter: true }
+      { force: true }
       );
     console.log("Tables have been created");
   } catch (error) {
@@ -144,6 +205,7 @@ module.exports = {
   DomaineTable,
   FormateurTable,
   SujetTable,
+  ChapitreTable,
 };
 
 // .then(_=>{

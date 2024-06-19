@@ -4,7 +4,7 @@ const {
   getSujetById,
   updateSujet,
   deleteSujet,
-} = require("../controllers/domainControllers/sujetControllers");
+} = require("../controllers/sujetControllers");
 
 const express = require("express");
 const router = express.Router();

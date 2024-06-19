@@ -2,7 +2,7 @@ const { getAllEvaluations,
   getEvaluationById,
   createEvaluation,
   updateEvaluation,
-  deleteEvaluation,} =require("../controllers/evaluationControllers/evaluationControllers")
+  deleteEvaluation,} =require("../controllers/evaluationControllers")
 
     const express = require("express");
   const router = express.Router();

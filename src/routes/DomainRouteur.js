@@ -4,7 +4,7 @@ const {
   getDomaineById,
   updateDomaine,
   deleteDomaine,
-} = require("../controllers/domainControllers/domainControllers");
+} = require("../controllers/domainControllers");
 
     const express = require("express");
   const router = express.Router();

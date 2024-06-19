@@ -42,6 +42,14 @@ const sujet = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      // domaineId: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false, // Assurez-vous que cette colonne n'est pas nullable
+      //   references: {
+      //     model: "domaines", // Nom de la table référencée
+      //     key: "domaineId", // Clé de la table référencée
+      //   },
+      // },
     },
     {
       timestamps: true,

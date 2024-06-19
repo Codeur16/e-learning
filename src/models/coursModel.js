@@ -146,4 +146,35 @@ const chapitre = (sequelize, DataTypes) => {
 
   return chapitre;
 };
+// const userCours = (sequelize, DataTypes) => {
+//   const UserCours = sequelize.define(
+//     "UserCours",
+//     {
+//       coursId: {
+//         type: DataTypes.INTEGER,
+//         primaryKey: true,
+//         references: {
+//           model: "cours",
+//           key: "coursId",
+//         },
+//       },
+//       studentId: {
+//         type: DataTypes.INTEGER,
+//         primaryKey: true,
+//         references: {
+//           model: "students",
+//           key: "studentId",
+//         },
+//       },
+//     },
+//     {
+//       timestamps: true,
+//       createdAt: true,
+//       updatedAt: "updateTimestamp",
+//     }
+//   );
+
+//   return UserCours;
+// };
+
 module.exports = { cours, evaluation, question, chapitre };
