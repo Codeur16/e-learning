@@ -188,8 +188,7 @@ async function initDB() {
   try {
     await sequelize
       .sync
-      // { force: true }
-      ();
+      ({alter:true});
     console.log("Tables have been created");
   } catch (error) {
     console.error("Unable to create tables:", error);

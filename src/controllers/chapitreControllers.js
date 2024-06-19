@@ -12,7 +12,7 @@ const createChapitre = async (req, res) => {
   try {
     const cours = await CoursTable.findByPk(coursId);
     if (!cours) {
-      return sendResponse(res, 404, "Cours inexistant");
+      return sendResponse(res, 201, "Cours inexistant");
     }
 
     const chapitre = await ChapitreTable.create({
@@ -74,7 +74,7 @@ const getchapitreById = async (req, res) => {
     if (chapitre) {
       sendResponse(res, 200, "chapitre récupéré avec succès", chapitre);
     } else {
-      sendResponse(res, 404, "chapitre inexistant");
+      sendResponse(res, 201, "chapitre inexistant");
     }
   } catch (error) {
     sendResponse(
@@ -105,7 +105,7 @@ const updatechapitre = async (req, res) => {
         updatedchapitre
       );
     } else {
-      sendResponse(res, 404, "chapitre inexistant");
+      sendResponse(res, 201, "chapitre inexistant");
     }
   } catch (error) {
     sendResponse(
@@ -125,7 +125,7 @@ const deletechapitre = async (req, res) => {
     if (deleted) {
       sendResponse(res, 204, "Le chapitre a été supprimé avec succès");
     } else {
-      sendResponse(res, 404, "chapitre inexistant");
+      sendResponse(res, 201, "chapitre inexistant");
     }
   } catch (error) {
     sendResponse(

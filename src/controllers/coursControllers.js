@@ -52,7 +52,7 @@ const getCoursById = async (req, res) => {
       sendResponse(res, 200, "Cours récupéré avec succès", cours);
     } else {
       console.log("Cours introuvable");
-      sendResponse(res, 404, "Cours introuvable");
+      sendResponse(res, 201, "Cours introuvable");
     }
   } catch (error) {
     console.error("Erreur lors de la récupération du cours :", error);
@@ -67,12 +67,12 @@ const createCours = async (req, res) => {
   try {
     const formateur = await FormateurTable.findByPk(formateurId);
     if (!formateur) {
-      return sendResponse(res, 404, "Formateur inexistant");
+      return sendResponse(res, 201, "Formateur inexistant");
     }
 
     const sujet = await SujetTable.findByPk(sujetId);
     if (!sujet) {
-      return sendResponse(res, 404, "Sujet inexistant");
+      return sendResponse(res, 201, "Sujet inexistant");
     }
         
     const cours = await CoursTable.create({
@@ -99,7 +99,7 @@ const updateCours = async (req, res) => {
       sendResponse(res, 200, "Cours modifié avec succès", updatedCours);
     } else {
       console.log("Cours introuvable");
-      sendResponse(res, 404, "Cours introuvable");
+      sendResponse(res, 201, "Cours introuvable");
     }
   } catch (error) {
     console.error("Erreur lors de la modification du cours :", error);
@@ -117,7 +117,7 @@ const deleteCours = async (req, res) => {
       sendResponse(res, 200, "Cours supprimé avec succès");
     } else {
       console.log("Cours introuvable");
-      sendResponse(res, 404, "Cours introuvable");
+      sendResponse(res, 201, "Cours introuvable");
     }
   } catch (error) {
     console.error("Erreur lors de la suppression du cours :", error);

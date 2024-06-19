@@ -10,7 +10,7 @@ const createSujet = async (req, res) => {
     const domaine = await DomaineTable.findByPk(id);
 
     if (!domaine) {
-      return sendResponse(res, 404, "Domaine inexistant !");
+      return sendResponse(res, 201, "Domaine inexistant !");
     }
 
     const sujet = await SujetTable.create({
@@ -66,7 +66,7 @@ const getSujetById = async (req, res) => {
     if (sujet) {
       sendResponse(res, 200, "Sujet récupéré avec succès", sujet);
     } else {
-      sendResponse(res, 404, "Sujet inexistant");
+      sendResponse(res, 201, "Sujet inexistant");
     }
   } catch (error) {
     sendResponse(
@@ -97,9 +97,9 @@ const updateSujet = async (req, res) => {
         updatedSujet
       );
     } else {
-      sendResponse(res, 404, "Sujet inexistant");
+      sendResponse(res, 201, "Sujet inexistant");
     }
-  } catch (error) {
+  } catch (error) {  
     sendResponse(
       res,
       500,
@@ -117,7 +117,7 @@ const deleteSujet = async (req, res) => {
     if (deleted) {
       sendResponse(res, 204, "Le sujet a été supprimé avec succès");
     } else {
-      sendResponse(res, 404, "Sujet inexistant");
+      sendResponse(res, 201, "Sujet inexistant");
     }
   } catch (error) {
     sendResponse(

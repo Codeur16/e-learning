@@ -15,8 +15,8 @@ const student = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      age: {
-        type: DataTypes.STRING,
+      dateNaissance: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
       email: {
@@ -82,8 +82,8 @@ const formateur = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      age: {
-        type: DataTypes.STRING,
+      dateNaissance: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
       email: {

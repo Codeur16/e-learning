@@ -52,7 +52,7 @@ const getEvaluationById = async (req, res) => {
     if (evaluation) {
       sendResponse(res, 200, "Évaluation récupérée avec succès", evaluation);
     } else {
-      sendResponse(res, 404, "Évaluation non trouvée");
+      sendResponse(res, 201, "Évaluation non trouvée");
     }
   } catch (error) {
     sendResponse(
@@ -74,7 +74,7 @@ const createEvaluation = async (req, res) => {
   try {
         const chapitre = await ChapitreTable.findByPk(chapitreId);
         if (!chapitre) {
-          return sendResponse(res, 404, "Chapitre inexistant");
+          return sendResponse(res, 201, "Chapitre inexistant");
         }
         
     const { questions, ...evaluationData } = req.body;
@@ -109,7 +109,7 @@ const updateEvaluation = async (req, res) => {
   try {
     const evaluation = await EvaluationTable.findByPk(req.params.id);
     if (!evaluation) {
-      sendResponse(res, 404, "Évaluation non trouvée");
+      sendResponse(res, 201, "Évaluation non trouvée");
       return;
     }
     const { questions, ...evaluationData } = req.body;
@@ -153,7 +153,7 @@ const deleteEvaluation = async (req, res) => {
   try {
     const evaluation = await EvaluationTable.findByPk(req.params.id);
     if (!evaluation) {
-      sendResponse(res, 404, "Évaluation non trouvée");
+      sendResponse(res, 201, "Évaluation non trouvée");
       return;
     }
     await QuestionTable.destroy({
@@ -237,7 +237,7 @@ module.exports = {
 //       sendResponse(res, 200, "Évaluation récupérée avec succès", evaluation);
 //     } else {
 //       console.log("Évaluation non trouvée");
-//       sendResponse(res, 404, "Évaluation non trouvée");
+//       sendResponse(res, 201, "Évaluation non trouvée");
 //     }
 //   } catch (error) {
 //     console.error("Erreur lors de la récupération de l'évaluation :", error);
@@ -257,7 +257,7 @@ module.exports = {
 //   try {
 //     const chapitre = await ChapitreTable.findByPk(chapitreId);
 //     if (!chapitre) {
-//       return sendResponse(res, 404, "chapitre inexistant");
+//       return sendResponse(res, 201, "chapitre inexistant");
 //     }
 
 //     const evaluation = await EvaluationTable.create({
@@ -292,7 +292,7 @@ module.exports = {
 //       );
 //     } else {
 //       console.log("Évaluation non trouvée");
-//       sendResponse(res, 404, "Évaluation non trouvée");
+//       sendResponse(res, 201, "Évaluation non trouvée");
 //     }
 //   } catch (error) {
 //     if (error instanceof ValidationError) {
@@ -319,7 +319,7 @@ module.exports = {
 //       sendResponse(res, 200, "Évaluation supprimée avec succès");
 //     } else {
 //       console.log("Évaluation non trouvée");
-//       sendResponse(res, 404, "Évaluation non trouvée");
+//       sendResponse(res, 201, "Évaluation non trouvée");
 //     }
 //   } catch (error) {
 //     console.error("Erreur lors de la suppression de l'évaluation :", error);

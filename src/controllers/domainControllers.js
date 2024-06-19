@@ -57,7 +57,7 @@ const getDomaineById = async (req, res) => {
     if (domaine) {
       sendResponse(res, 200, "Domaine récupéré avec succès", domaine);
     } else {
-      sendResponse(res, 404, "Domaine inexistant");
+      sendResponse(res, 201, "Domaine inexistant");
     }
   } catch (error) {
     sendResponse(
@@ -86,7 +86,7 @@ const updateDomaine = async (req, res) => {
         updatedDomaine
       );
     } else {
-      sendResponse(res, 404, "Domaine inexistant");
+      sendResponse(res, 201, "Domaine inexistant");
     }
   } catch (error) {
     sendResponse(
@@ -105,7 +105,7 @@ const deleteDomaine = async (req, res) => {
     if (deleted) {
       sendResponse(res, 204, "Le domaine a été supprimé avec succès");
     } else {
-      sendResponse(res, 404, "Domaine inexistant");
+      sendResponse(res, 201, "Domaine inexistant");
     }
   } catch (error) {
     sendResponse(
