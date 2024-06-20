@@ -1,6 +1,8 @@
 const {  StudentTable, CoursTable  } = require("../db/sequelize");
 
-
+const sendResponse = (res, statusCode, message, data = null) => {
+  res.status(statusCode).json({ message, data });
+};
 
 const addStudentToCours = async (req, res) => {
   const { studentId, coursId } = req.body;
@@ -16,8 +18,8 @@ const addStudentToCours = async (req, res) => {
       return sendResponse(res, 201, "Cours non trouvé");
     }
 
-    await StudentTable.addCours(cours);
-    sendResponse(res, 200, "Étudiant ajouté au cours avec succès");
+    await student.addCours(cours);
+    sendResponse(res, 200, "Étudiant ajouté au cours avec succès", cours);
   } catch (error) {
     console.error("Erreur lors de l'ajout de l'étudiant au cours :", error);
     sendResponse(
@@ -44,7 +46,7 @@ const removeStudentFromCours = async (req, res) => {
       return sendResponse(res, 201, "Cours non trouvé");
     }
 
-    await StudentTable.removeCours(cours);
+    await student.removeCours(cours);
     sendResponse(res, 200, "Étudiant retiré du cours avec succès");
   } catch (error) {
     console.error(

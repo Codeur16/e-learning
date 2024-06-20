@@ -1,6 +1,6 @@
 const { ValidationError } = require("sequelize");
 const bcrypt = require("bcrypt");
-const { StudentTable } = require("../db/sequelize");
+const { StudentTable, CoursTable } = require("../db/sequelize");
 
 const sendResponse = (res, statusCode, message, data = null) => {
   res.status(statusCode).json({ message, data });
@@ -117,7 +117,14 @@ const updateStudent = async (req, res) => {
 // Rechercher un étudiant
 const getStudentById = async (req, res) => {
   try {
-    const student = await StudentTable.findByPk(req.params.id);
+    const student = await StudentTable.findByPk(req.params.id, {
+      include: [
+        {
+          model: CoursTable, // Ajoutez ceci pour inclure la table des étudiants
+          //as: "etudiants", // Donnez un alias à la relation avec les étudiants
+        },
+      ],
+    });
     if (student) {
       sendResponse(res, 200, "Étudiant récupéré avec succès", student);
     } else {
@@ -131,7 +138,14 @@ const getStudentById = async (req, res) => {
 // Rechercher tous les étudiants
 const getAllStudents = async (req, res) => {
   try {
-    const students = await StudentTable.findAll();
+    const students = await StudentTable.findAll({
+      include: [
+        {
+          model: CoursTable, // Ajoutez ceci pour inclure la table des étudiants
+          //as: "etudiants", // Donnez un alias à la relation avec les étudiants
+        },
+      ],
+    });
     sendResponse(res, 200, "Étudiants récupérés avec succès", students);
   } catch (err) {
     sendResponse(res, 500, "Erreur lors de la récupération des étudiants", err);

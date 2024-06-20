@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const indexRouteur = require("../src/routes/indexRouter");
-const { swaggerDocs } = require("./swagger");
+const { swaggerDocs } = require("../swagger");
 require("dotenv").config();
 
 const swaggerJsdoc = require("swagger-jsdoc");
