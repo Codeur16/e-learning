@@ -1,5 +1,5 @@
 const { ValidationError } = require("sequelize");
-const { EvaluationTable, QuestionTable } = require("../db/sequelize");
+const { EvaluationTable, QuestionTable, ReponseUserTable } = require("../db/sequelize");
 
 const sendResponse = (res, status, message, data = null) => {
   res.status(status).json({
@@ -11,18 +11,29 @@ const sendResponse = (res, status, message, data = null) => {
 // Afficher toutes les évaluations avec leurs questions associées
 const getAllEvaluations = async (req, res) => {
   try {
-    const evaluations = await EvaluationTable.findAll({
-      include: [
-        {
-          model: QuestionTable,
-          as: "questions",
-        },
-        {
-          model: ChapitreTable,
-          as:"chapitre"
-        }
-      ],
-    });
+    const evaluations = await EvaluationTable.findAll(
+      {
+        include: [
+          {
+            model: QuestionTable,
+            as: "questions",
+            include: [{ model: ReponseUserTable, as: "reposeUtilisateurs" }],
+          },
+        ],
+      }
+      //   {
+      //   include: [
+      //     {
+      //       model: QuestionTable,
+      //       as: "questions",
+      //     },
+      //     {
+      //       model: ChapitreTable,
+      //       as:"chapitre"
+      //     }
+      //   ],
+      // }
+    );
     sendResponse(res, 200, "Évaluations récupérées avec succès", evaluations);
   } catch (error) {
     sendResponse(
@@ -37,18 +48,29 @@ const getAllEvaluations = async (req, res) => {
 // Afficher une évaluation avec ses questions associées par son ID
 const getEvaluationById = async (req, res) => {
   try {
-    const evaluation = await EvaluationTable.findByPk(req.params.id, {
+    const evaluation = await EvaluationTable.findByPk(req.params.id, 
+       {
       include: [
         {
           model: QuestionTable,
-          as: "questions",
-        },
-        {
-          model: ChapitreTable,
-          as: "chapitre",
-        },
-      ],
-    });
+          as: 'questions',
+          include: [{ model:   ReponseUserTable, as: 'reposeUtilisateurs' }]
+        }
+      ]
+    }
+    //    {
+    //   include: [
+    //     {
+    //       model: QuestionTable,
+    //       as: "questions",
+    //     },
+    //     {
+    //       model: ChapitreTable,
+    //       as: "chapitre",
+    //     },
+    //   ],
+    // }
+    );
     if (evaluation) {
       sendResponse(res, 200, "Évaluation récupérée avec succès", evaluation);
     } else {
@@ -77,19 +99,35 @@ const createEvaluation = async (req, res) => {
           return sendResponse(res, 201, "Chapitre inexistant");
         }
         
-    const { questions, ...evaluationData } = req.body;
-    const evaluation = await EvaluationTable.create(evaluationData);
-    if (questions && questions.length > 0) {
-      await Promise.all(
-        questions.map(async (question) => {
-          await QuestionTable.create({
-            evaluationId: evaluation.evaluationId,
-            ...question,
-          });
-        })
-      );
-    }
-    sendResponse(res, 201, "Évaluation créée avec succès", evaluation);
+
+          const { titre, description, questions } = req.body;
+
+          // Créer une nouvelle évaluation avec ses questions
+          const newEvaluation = await EvaluationTable.create(
+            {
+              titre,
+              description,
+              questions, // le tableau de questions sera automatiquement associé à l'évaluation
+            },
+            {
+              include: [{ model: QuestionTable, as: "questions" }],
+            }
+          );
+
+          sendResponse(res, 201, "Évaluation créée avec succès", newEvaluation);
+    // const { questions, ...evaluationData } = req.body;
+    // const evaluation = await EvaluationTable.create(evaluationData);
+    // if (questions && questions.length > 0) {
+    //   await Promise.all(
+    //     questions.map(async (question) => {
+    //       await QuestionTable.create({
+    //         evaluationId: evaluation.evaluationId,
+    //         ...question,
+    //       });
+    //     })
+    //   );
+    // }
+    // sendResponse(res, 201, "Évaluation créée avec succès", evaluation);
   } catch (error) {
     if (error instanceof ValidationError) {
       sendResponse(res, 400, error.message, error);
@@ -177,6 +215,7 @@ module.exports = {
   createEvaluation,
   updateEvaluation,
   deleteEvaluation,
+  
 };
 
 // const { ValidationError } = require("sequelize");

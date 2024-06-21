@@ -4,12 +4,13 @@ const dbConfig = require("../configs/db.config");
 
 // importation des models
 
-const { student, formateur } = require("../models/userModel");
+const { student, formateur, admin } = require("../models/userModel");
 const {
   cours,
   evaluation,
   question,
   chapitre,
+  reponseUtilisateur,
 } = require("../models/coursModel");
 const { domaine, sujet } = require("../models/domainModel");
 require("dotenv").config();
@@ -88,7 +89,10 @@ const QuestionTable = question(sequelize, DataTypes);
 const StudentTable = student(sequelize, DataTypes);
 const FormateurTable = formateur(sequelize, DataTypes);
 const ChapitreTable = chapitre(sequelize, DataTypes);
+const AdminTable = admin(sequelize, DataTypes);
+const ReponseUserTable = reponseUtilisateur(sequelize, DataTypes);
 //======================== definition des associations entre les tables:======================================
+
 // 1) cours et users ========================================
 CoursTable.belongsToMany(StudentTable, {
   through: "UserCours",
@@ -181,15 +185,23 @@ SujetTable.belongsTo(DomaineTable, {
   foreignKey: "domaineId",
   onDelete: "CASCADE",
 });
+// 9) question et reponse utilisateur
+
+QuestionTable.hasOne(ReponseUserTable, {
+  as: "reposeUtilisateurs",
+  foreignKey: "questionId",
+  onDelete: "CASCADE",
+});
+ReponseUserTable.belongsTo(QuestionTable, {
+  as: "questions",
+  foreignKey: "questionId",
+});
 //association de la baase de donnees
 
 async function initDB() {
   console.log("Initialisation des tables de la base de données");
   try {
-    await sequelize
-      .sync
-      //{ force: true }
-      ();
+    await sequelize.sync({ alter: true });
     console.log("Tables have been created");
   } catch (error) {
     console.error("Unable to create tables:", error);
@@ -207,6 +219,8 @@ module.exports = {
   FormateurTable,
   SujetTable,
   ChapitreTable,
+  AdminTable,
+  ReponseUserTable,
 };
 
 // .then(_=>{
