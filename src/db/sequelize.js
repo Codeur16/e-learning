@@ -102,7 +102,6 @@ StudentTable.belongsToMany(CoursTable, {
   through: "UserCours",
   onDelete: "CASCADE",
 });
-
 // 2) cours et evaluations================================
 ChapitreTable.hasOne(EvaluationTable, {
   as: "evaluations",
@@ -150,7 +149,6 @@ CoursTable.belongsTo(FormateurTable, {
   foreignKey: "formateurId",
   onDelete: "CASCADE",
 });
-
 //6)  domain   et formateur =============================
 DomaineTable.hasMany(FormateurTable, {
   as: "formateurs",
@@ -162,7 +160,6 @@ FormateurTable.belongsTo(DomaineTable, {
   foreignKey: "domaineId",
   onDelete: "CASCADE",
 });
-
 //7)  cours et chapitres =============================
 CoursTable.hasMany(ChapitreTable, {
   as: "chapitres",

@@ -118,6 +118,15 @@ const formateur = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      actif: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: "false",
+      },
+      adminId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       timestamps: true,

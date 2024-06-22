@@ -22,11 +22,7 @@ const cours = (sequelize, DataTypes) => {
       tempsApprentissage: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      },
-      chapitreActuel: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
+      }
     },
     {
       timestamps: true,

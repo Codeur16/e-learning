@@ -1,146 +1,175 @@
 /**
  * @swagger
  * tags:
- *   name: Évaluations
- *   description: API pour gérer les évaluations
- */
-
-/**
- * @swagger
- * /api/evaluation/create:
- *   post:
- *     summary: Créer une nouvelle évaluation
- *     tags: [Évaluations]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - name
- *               - description
- *             properties:
- *               name:
- *                 type: string
- *                 example: "Évaluation 1"
- *               description:
- *                 type: string
- *                 example: "Description de l'évaluation 1"
- *     responses:
- *       201:
- *         description: Évaluation créée
- *       500:
- *         description: Erreur lors de la création de l'évaluation
- */
-
-/**
- * @swagger
- * /api/evaluation/update/{id}:
- *   put:
- *     summary: Mettre à jour une évaluation
- *     tags: [Évaluations]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID de l'évaluation à mettre à jour
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 example: "Évaluation 1 mise à jour"
- *               description:
- *                 type: string
- *                 example: "Description mise à jour de l'évaluation 1"
- *     responses:
- *       200:
- *         description: Évaluation mise à jour
- *       404:
- *         description: Évaluation non trouvée
- *       500:
- *         description: Erreur lors de la mise à jour de l'évaluation
- */
-
-/**
- * @swagger
- * /api/evaluation/get:
- *   get:
- *     summary: Récupérer toutes les évaluations
- *     tags: [Évaluations]
- *     responses:
- *       200:
- *         description: Liste de toutes les évaluations
- *       500:
- *         description: Erreur lors de la récupération des évaluations
- */
-
-/**
- * @swagger
- * /api/evaluation/get/{id}:
- *   get:
- *     summary: Récupérer une évaluation par ID
- *     tags: [Évaluations]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID de l'évaluation à récupérer
- *     responses:
- *       200:
- *         description: Évaluation trouvée
- *       404:
- *         description: Évaluation non trouvée
- *       500:
- *         description: Erreur lors de la récupération de l'évaluation
- */
-
-/**
- * @swagger
- * /api/evaluation/delete/{id}:
- *   delete:
- *     summary: Supprimer une évaluation par ID
- *     tags: [Évaluations]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: ID de l'évaluation à supprimer
- *     responses:
- *       200:
- *         description: Évaluation supprimée
- *       404:
- *         description: Évaluation non trouvée
- *       500:
- *         description: Erreur lors de la suppression de l'évaluation
+ *   name: Formateurs
+ *   description: Endpoints pour gérer les formateurs
  */
 
 const {
-  getAllEvaluations,
-  getEvaluationById,
-  createEvaluation,
-  updateEvaluation,
-  deleteEvaluation,
-} = require("../controllers/evaluationControllers");
+  FormateurRegistration,
+  FormateurLogin,
+  deleteFormateur,
+  updateFormateur,
+  getFormateurById,
+  getAllFormateurs,
+} = require("../controllers/formateurAuth");
 
 const express = require("express");
 const router = express.Router();
 
-router.post("/create", createEvaluation);
-router.put("/update/:id", updateEvaluation);
-router.get("/get", getAllEvaluations);
-router.get("/get/:id", getEvaluationById);
-router.delete("/delete/:id", deleteEvaluation);
+/**
+ * @swagger
+ * /api/formateur/get:
+ *   get:
+ *     summary: Récupérer la liste de tous les formateurs
+ *     tags: [Formateurs]
+ *     responses:
+ *       200:
+ *         description: Liste des formateurs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Formateur'
+ *       500:
+ *         description: Erreur serveur
+ */
+router.get("/get", getAllFormateurs);
+
+/**
+ * @swagger
+ * /api/formateur/get/{id}:
+ *   get:
+ *     summary: Récupérer un formateur par ID
+ *     tags: [Formateurs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID du formateur
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Formateur trouvé
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Formateur'
+ *       404:
+ *         description: Formateur non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
+router.get("/get/:id", getFormateurById);
+
+/**
+ * @swagger
+ * tags:
+ *   name: Formateurs
+ *   description: API pour gérer les formateurs
+ */
+
+/**
+ * @swagger
+ * /api/formateur/create/{iddomaine}:
+ *   post:
+ *     summary: Créer un nouveau formateur
+ *     tags: [Formateurs]
+ *     parameters:
+ *       - in: path
+ *         name: iddomaine
+ *         required: true
+ *         description: ID du domaine
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/FormateurRegistration'
+ *     responses:
+ *       201:
+ *         description: Formateur créé
+ *       500:
+ *         description: Erreur serveur
+ */
+router.post("/create/:iddomaine", FormateurRegistration);
+
+/**
+ * @swagger
+ * /api/formateur/login:
+ *   post:
+ *     summary: Connexion d'un formateur
+ *     tags: [Formateurs]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/FormateurLogin'
+ *     responses:
+ *       200:
+ *         description: Connexion réussie
+ *       401:
+ *         description: Identifiants invalides
+ *       500:
+ *         description: Erreur serveur
+ */
+router.post("/login", FormateurLogin);
+
+/**
+ * @swagger
+ * /api/formateur/delete/{id}:
+ *   delete:
+ *     summary: Supprimer un formateur par ID
+ *     tags: [Formateurs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID du formateur à supprimer
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Formateur supprimé
+ *       404:
+ *         description: Formateur non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
+router.delete("/delete/:id", deleteFormateur);
+
+/**
+ * @swagger
+ * /api/formateur/update/{id}:
+ *   put:
+ *     summary: Mettre à jour les informations d'un formateur par ID
+ *     tags: [Formateurs]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID du formateur à mettre à jour
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/FormateurUpdate'
+ *     responses:
+ *       200:
+ *         description: Formateur mis à jour
+ *       404:
+ *         description: Formateur non trouvé
+ *       500:
+ *         description: Erreur serveur
+ */
+router.put("/update/:id", updateFormateur);
 
 module.exports = router;
