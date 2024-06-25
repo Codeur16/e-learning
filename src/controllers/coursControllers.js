@@ -3,6 +3,7 @@ const {
   FormateurTable,
   SujetTable,
   StudentTable,
+  DomaineTable
 } = require("../db/sequelize");
 
 const sendResponse = (res, statusCode, message, data = null) => {
@@ -16,6 +17,12 @@ const getAllCours = async (req, res) => {
         {
           model: SujetTable,
           as: "sujets",
+          include: [
+            {
+              model: DomaineTable, // Incluez le modèle DomaineTable
+              as: "domaines", // Donnez un alias à la relation avec le domaine
+            },
+          ],
         },
         {
           model: FormateurTable,
@@ -47,6 +54,12 @@ const getCoursById = async (req, res) => {
         {
           model: SujetTable,
           as: "sujets",
+          include: [
+            {
+              model: DomaineTable, // Incluez le modèle DomaineTable
+              as: "domaines", // Donnez un alias à la relation avec le domaine
+            },
+          ],
         },
         {
           model: FormateurTable,

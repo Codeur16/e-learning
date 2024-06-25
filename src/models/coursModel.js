@@ -164,18 +164,18 @@ const chapitre = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      position:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
       titre: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       textes: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
+      duree:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      }
 
     },
     {

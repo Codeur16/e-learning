@@ -133,12 +133,98 @@
  *         description: Erreur lors de la suppression du chapitre
  */
 
+/**
+ * @swagger
+ * /api/chapitre/delete/{id}:
+ *   delete:
+ *     summary: Supprimer un chapitre par ID
+ *     tags: [Chapitres]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID du chapitre à supprimer
+ *     responses:
+ *       200:
+ *         description: Chapitre supprimé
+ *       404:
+ *         description: Chapitre non trouvé
+ *       500:
+ *         description: Erreur lors de la suppression du chapitre
+ */
+/**
+ * @swagger
+ * /api/chapitres/cours/{coursId}:
+ *   get:
+ *     summary: Récupérer tous les chapitres par ID de cours
+ *     tags: [Chapitres]
+ *     parameters:
+ *       - in: path
+ *         name: coursId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID du cours pour lequel récupérer les chapitres
+ *     responses:
+ *       200:
+ *         description: Chapitres récupérés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID du chapitre
+ *                   titre:
+ *                     type: string
+ *                     description: Titre du chapitre
+ *                   contenu:
+ *                     type: string
+ *                     description: Contenu du chapitre
+ *                   coursId:
+ *                     type: integer
+ *                     description: ID du cours
+ *                   cours:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: ID du cours
+ *                       nom:
+ *                         type: string
+ *                         description: Nom du cours
+ *                   evaluations:
+ *                     type: array
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: integer
+ *                           description: ID de l'évaluation
+ *                         nom:
+ *                           type: string
+ *                           description: Nom de l'évaluation
+ *                         score:
+ *                           type: integer
+ *                           description: Score de l'évaluation
+ *       201:
+ *         description: Aucun chapitre trouvé pour ce cours
+ *       500:
+ *         description: Erreur lors de la récupération des chapitres
+ */
+
 const {
   createChapitre,
   getAllchapitres,
   getchapitreById,
   updatechapitre,
   deletechapitre,
+  getChapitresByIdCours,
 } = require("../controllers/chapitreControllers");
 
 const express = require("express");
@@ -149,5 +235,6 @@ router.put("/update/:id", updatechapitre);
 router.get("/get", getAllchapitres);
 router.get("/get/:id", getchapitreById);
 router.delete("/delete/:id", deletechapitre);
+router.get("/getbyidcours/:coursId", getChapitresByIdCours);
 
 module.exports = router;

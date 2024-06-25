@@ -193,6 +193,17 @@ ReponseUserTable.belongsTo(QuestionTable, {
   as: "questions",
   foreignKey: "questionId",
 });
+
+// 10 ) reponses et students
+StudentTable.hasMany(ReponseUserTable, {
+  as: "reposeUtilisateurs",
+  foreignKey: "studentId",
+  onDelete: "CASCADE",
+});
+ReponseUserTable.belongsTo(StudentTable, {
+  as: "student",
+  foreignKey: "studentId",
+});
 //association de la baase de donnees
 
 async function initDB() {

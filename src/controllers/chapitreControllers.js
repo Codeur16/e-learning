@@ -85,6 +85,40 @@ const getchapitreById = async (req, res) => {
     );
   }
 };
+const getChapitresByIdCours = async (req, res) => {
+  try {
+    const { coursId } = req.params;
+    const chapitres = await ChapitreTable.findAll({
+      where: {
+        coursId: coursId,
+      },
+      include: [
+        {
+          model: CoursTable,
+          as: "cours",
+        },
+        {
+          model: EvaluationTable,
+          as: "evaluations",
+        },
+      ],
+    });
+
+    if (chapitres.length > 0) {
+      sendResponse(res, 200, "Chapitres récupérés avec succès", chapitres);
+    } else {
+      sendResponse(res, 201, "Aucun chapitre trouvé pour ce cours");
+    }
+  } catch (error) {
+    sendResponse(
+      res,
+      500,
+      "Erreur lors de la récupération des chapitres",
+      error.message
+    );
+  }
+};
+
 
 const updatechapitre = async (req, res) => {
   try {
@@ -143,4 +177,5 @@ module.exports = {
   getchapitreById,
   updatechapitre,
   deletechapitre,
+  getChapitresByIdCours,
 };
