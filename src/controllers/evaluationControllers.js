@@ -1,5 +1,10 @@
 const { ValidationError } = require("sequelize");
-const { EvaluationTable, QuestionTable, ReponseUserTable } = require("../db/sequelize");
+const {
+  EvaluationTable,
+  QuestionTable,
+  ReponseUserTable,
+  ChapitreTable,
+} = require("../db/sequelize");
 
 const sendResponse = (res, status, message, data = null) => {
   res.status(status).json({
@@ -48,28 +53,29 @@ const getAllEvaluations = async (req, res) => {
 // Afficher une évaluation avec ses questions associées par son ID
 const getEvaluationById = async (req, res) => {
   try {
-    const evaluation = await EvaluationTable.findByPk(req.params.id, 
-       {
-      include: [
-        {
-          model: QuestionTable,
-          as: 'questions',
-          include: [{ model:   ReponseUserTable, as: 'reposeUtilisateurs' }]
-        }
-      ]
-    }
-    //    {
-    //   include: [
-    //     {
-    //       model: QuestionTable,
-    //       as: "questions",
-    //     },
-    //     {
-    //       model: ChapitreTable,
-    //       as: "chapitre",
-    //     },
-    //   ],
-    // }
+    const evaluation = await EvaluationTable.findByPk(
+      req.params.id,
+      {
+        include: [
+          {
+            model: QuestionTable,
+            as: "questions",
+            include: [{ model: ReponseUserTable, as: "reposeUtilisateurs" }],
+          },
+        ],
+      }
+      //    {
+      //   include: [
+      //     {
+      //       model: QuestionTable,
+      //       as: "questions",
+      //     },
+      //     {
+      //       model: ChapitreTable,
+      //       as: "chapitre",
+      //     },
+      //   ],
+      // }
     );
     if (evaluation) {
       sendResponse(res, 200, "Évaluation récupérée avec succès", evaluation);
@@ -97,24 +103,24 @@ const createEvaluation = async (req, res) => {
       return sendResponse(res, 201, "Chapitre inexistant");
     }
 
-    const { titre, consigne, questions } = req.body;
+    //const { titre, consigne, questions } = req.body;
 
     // Créer une nouvelle évaluation
     const newEvaluation = await EvaluationTable.create({
-      titre,
-      consigne  // Associer l'évaluation au chapitre
+      ...req.body,
+      chapitreId: chapitre.chapitreId,
     });
 
     // Si des questions sont fournies, les associer à l'évaluation
-    if (questions && questions.length > 0) {
-      const createdQuestions = await QuestionTable.bulkCreate(
-        questions.map((question) => ({
-          ...question,
-          evaluationId: newEvaluation.id, // Associer chaque question à l'évaluation
-        }))
-      );
-      newEvaluation.questions = createdQuestions;
-    }
+    // if (questions && questions.length > 0) {
+    //   const createdQuestions = await QuestionTable.bulkCreate(
+    //     questions.map((question) => ({
+    //       ...question,
+    //       evaluationId: newEvaluation.id, // Associer chaque question à l'évaluation
+    //     }))
+    //   );
+    //   newEvaluation.questions = createdQuestions;
+    // }
 
     sendResponse(res, 201, "Évaluation créée avec succès", newEvaluation);
   } catch (error) {
@@ -130,7 +136,6 @@ const createEvaluation = async (req, res) => {
     }
   }
 };
-
 
 // Modifier une évaluation
 const updateEvaluation = async (req, res) => {
@@ -205,7 +210,6 @@ module.exports = {
   createEvaluation,
   updateEvaluation,
   deleteEvaluation,
-  
 };
 
 // const { ValidationError } = require("sequelize");
