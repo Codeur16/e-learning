@@ -89,7 +89,7 @@ const getEvaluationById = async (req, res) => {
 // Créer une évaluation avec ses questions associées
 const createEvaluation = async (req, res) => {
 
-  const chapitreId = req.params.idchapitre;
+  const chapitreId = req.params.chapitreId;
 
 
 

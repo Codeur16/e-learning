@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /api/evaluation/create:
+ * /api/evaluation/create/{chapitreId}:
  *   post:
  *     summary: Créer une nouvelle évaluation
  *     tags: [Évaluations]
@@ -137,7 +137,7 @@ const {
 const express = require("express");
 const router = express.Router();
 
-router.post("/create", createEvaluation);
+router.post("/create/:chapitreId", createEvaluation);
 router.put("/update/:id", updateEvaluation);
 router.get("/get", getAllEvaluations);
 router.get("/get/:id", getEvaluationById);
