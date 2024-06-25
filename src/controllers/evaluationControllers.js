@@ -88,46 +88,35 @@ const getEvaluationById = async (req, res) => {
 
 // Créer une évaluation avec ses questions associées
 const createEvaluation = async (req, res) => {
-
   const chapitreId = req.params.chapitreId;
 
-
-
   try {
-        const chapitre = await ChapitreTable.findByPk(chapitreId);
-        if (!chapitre) {
-          return sendResponse(res, 201, "Chapitre inexistant");
-        }
-        
+    // Vérifier si le chapitre existe
+    const chapitre = await ChapitreTable.findByPk(chapitreId);
+    if (!chapitre) {
+      return sendResponse(res, 201, "Chapitre inexistant");
+    }
 
-          const { titre, description, questions } = req.body;
+    const { titre, consigne, questions } = req.body;
 
-          // Créer une nouvelle évaluation avec ses questions
-          const newEvaluation = await EvaluationTable.create(
-            {
-              titre,
-              description,
-              questions, // le tableau de questions sera automatiquement associé à l'évaluation
-            },
-            {
-              include: [{ model: QuestionTable, as: "questions" }],
-            }
-          );
+    // Créer une nouvelle évaluation
+    const newEvaluation = await EvaluationTable.create({
+      titre,
+      consigne  // Associer l'évaluation au chapitre
+    });
 
-          sendResponse(res, 201, "Évaluation créée avec succès", newEvaluation);
-    // const { questions, ...evaluationData } = req.body;
-    // const evaluation = await EvaluationTable.create(evaluationData);
-    // if (questions && questions.length > 0) {
-    //   await Promise.all(
-    //     questions.map(async (question) => {
-    //       await QuestionTable.create({
-    //         evaluationId: evaluation.evaluationId,
-    //         ...question,
-    //       });
-    //     })
-    //   );
-    // }
-    // sendResponse(res, 201, "Évaluation créée avec succès", evaluation);
+    // Si des questions sont fournies, les associer à l'évaluation
+    if (questions && questions.length > 0) {
+      const createdQuestions = await QuestionTable.bulkCreate(
+        questions.map((question) => ({
+          ...question,
+          evaluationId: newEvaluation.id, // Associer chaque question à l'évaluation
+        }))
+      );
+      newEvaluation.questions = createdQuestions;
+    }
+
+    sendResponse(res, 201, "Évaluation créée avec succès", newEvaluation);
   } catch (error) {
     if (error instanceof ValidationError) {
       sendResponse(res, 400, error.message, error);
@@ -141,6 +130,7 @@ const createEvaluation = async (req, res) => {
     }
   }
 };
+
 
 // Modifier une évaluation
 const updateEvaluation = async (req, res) => {

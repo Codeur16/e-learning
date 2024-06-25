@@ -229,7 +229,6 @@ const {
 
 const express = require("express");
 const router = express.Router();
-
 router.post("/create/:idcours", createChapitre);
 router.put("/update/:id", updatechapitre);
 router.get("/get", getAllchapitres);
