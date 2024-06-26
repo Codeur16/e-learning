@@ -1,0 +1,126 @@
+<!-- ==== Header ==== -->
+<app-navbar></app-navbar>
+<!-- End header -->
+
+
+<!-- ==== content ==== -->
+<main id="main">
+    <!-- hero section -->
+    <div class="container mb-5 d-sm-flex align-items-center">
+
+        <div class="col w-100 max-width-100 mb-4">
+            <!-- search bar -->
+            <div class="col-sm-12">
+                <mat-form-field class="w-100" appearance="outline">
+                    <mat-label>Mot clé</mat-label>
+                    <input matInput ngModel placeholder="Mot clé" />
+                    <mat-icon matPrefix class="text-secondary">search</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <!-- Formulaire -->
+            <div class="row w-100 max-width-100 mb-4">
+                <div class="col-sm-2">
+                    <button mat-raised-button style="height: 56px !important" class="primary-dark-button w-100">
+                        Rechercher
+                    </button>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Popularite</mat-label>
+                        <mat-select>
+                            <mat-option value="one">First option</mat-option>
+                            <mat-option value="two">Second option</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Duree</mat-label>
+                        <mat-select>
+                            <mat-option value="one">First option</mat-option>
+                            <mat-option value="two">Second option</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Langue</mat-label>
+                        <mat-select>
+                            <mat-option value="one">First option</mat-option>
+                            <mat-option value="two">Second option</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Format</mat-label>
+                        <mat-select>
+                            <mat-option value="one">First option</mat-option>
+                            <mat-option value="two">Second option</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-md-2">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Niveau</mat-label>
+                        <mat-select>
+                            <mat-option value="one">First option</mat-option>
+                            <mat-option value="two">Second option</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <!-- course section -->
+            <div class=" mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <app-course-card [course]="null"></app-course-card>
+                    </div>
+                    <div class="col-md-4">
+                        <app-course-card [course]="null"></app-course-card>
+                    </div>
+                    <div class="col-md-4">
+                        <app-course-card [course]="null"></app-course-card>
+                    </div>
+                    <div class="col-md-4">
+                        <app-course-card [course]="null"></app-course-card>
+                    </div>
+                    <div class="col-md-4">
+                        <app-course-card [course]="null"></app-course-card>
+                    </div>
+                    <div class="col-md-4">
+                        <app-course-card [course]="null"></app-course-card>
+                    </div>
+                    <div class="col-md-4">
+                        <app-course-card [course]="null"></app-course-card>
+                    </div>
+                    <div class="col-md-4">
+                        <app-course-card [course]="null"></app-course-card>
+                    </div>
+                    <div class="col-md-4">
+                        <app-course-card [course]="null"></app-course-card>
+                    </div>
+                </div>
+            </div>
+
+            <!-- paginator -->
+            
+            <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="length"
+                [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
+                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize"
+                [pageIndex]="pageIndex" aria-label="Select page">
+            </mat-paginator>
+
+        </div>
+
+    </div>
+
+</main>
+<!-- End content -->
+
+<!-- ==== footer ==== -->
+<app-footer></app-footer>
+<!-- End footer -->

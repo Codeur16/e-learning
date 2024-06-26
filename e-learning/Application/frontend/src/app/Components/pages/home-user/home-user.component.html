@@ -1,0 +1,109 @@
+<app-navbar></app-navbar>
+<div class="container mt-3">
+  <div class="row">
+    <!-- sidebar -->
+    <div class="col-lg-3">
+      <!-- Espace utilisateur -->
+      <mat-list>
+        <div mat-subheader class="fw-semibold">Espace utilisateur</div>
+
+        <!-- tableau de bord -->
+        <button
+          class="w-100 d-flex justify-content-start"
+          mat-button
+          routerLink="user/home/dashboard"
+          routerLinkActive="nav-item-active"
+        >
+          <mat-list-item
+            ><mat-icon matListItemIcon>dashboard</mat-icon>
+            <div matListItemTitle>Tableau de bord</div></mat-list-item
+          >
+        </button>
+
+        <!-- en cours -->
+        <button
+          class="w-100 d-flex justify-content-start"
+          mat-button
+          routerLink="/user/home/dashboard"
+          routerLinkActive="nav-item-active"
+        >
+          <mat-list-item
+            routerLink="/user/home/dashboard"
+            routerLinkActive="nav-item-active"
+            ><mat-icon matListItemIcon>search</mat-icon>
+            <div matListItemTitle>En cours</div></mat-list-item
+          >
+        </button>
+
+        <!-- terminer -->
+        <button
+          class="w-100 d-flex justify-content-start"
+          mat-button
+          routerLink="/user/home/dashboard"
+          routerLinkActive="nav-item-active"
+        >
+          <mat-list-item
+            routerLink="/user/home/dashboard"
+            routerLinkActive="nav-item-active"
+            ><mat-icon matListItemIcon>done</mat-icon>
+            <div matListItemTitle>Terminées</div></mat-list-item
+          >
+        </button>
+      </mat-list>
+
+      <!-- evaluation section -->
+      <mat-list>
+        <div mat-subheader class="fw-semibold">Évaluation</div>
+
+        <!-- tableau de bord -->
+        <button
+          class="w-100 d-flex justify-content-start"
+          mat-button
+          routerLink="/user/home/dashboard"
+          routerLinkActive="nav-item-active"
+        >
+          <mat-list-item
+            ><mat-icon matListItemIcon>book</mat-icon>
+            <div matListItemTitle>Tout</div></mat-list-item
+          >
+        </button>
+
+        <!-- Disponible -->
+        <button
+          class="w-100 d-flex justify-content-start"
+          mat-button
+          routerLink="/user/home/dashboard"
+          routerLinkActive="nav-item-active"
+        >
+          <mat-list-item
+            routerLink="/user/home/dashboard"
+            routerLinkActive="nav-item-active"
+            ><mat-icon matListItemIcon>library_books</mat-icon>
+            <div matListItemTitle>Disponibles</div></mat-list-item
+          >
+        </button>
+
+        <!-- Avenir -->
+        <button
+          class="w-100 d-flex justify-content-start"
+          mat-button
+          routerLink="/user/home/dashboard"
+          routerLinkActive="nav-item-active"
+        >
+          <mat-list-item
+            routerLink="/user/home/dashboard"
+            routerLinkActive="nav-item-active"
+            ><mat-icon matListItemIcon>schedule</mat-icon>
+            <div matListItemTitle>A venir</div></mat-list-item
+          >
+        </button>
+      </mat-list>
+    </div>
+
+    <!-- content -->
+    <div class="col-lg-9">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,309 @@
+<!-- ==== Header ==== -->
+<app-navbar></app-navbar>
+<!-- End header -->
+
+<body>
+  <!-- ==== content ==== -->
+  <main id="main">
+    <!-- hero section -->
+    <div class="container mb-5 d-sm-flex align-items-center">
+      <!-- text content -->
+      <div class="d-flex flex-column flex-fill p-3">
+        <!-- title -->
+        <span class="fw-semibold fs-2 mb-3"
+          ><span class="text-orange">Etudier</span> en ligne est mainenant plus
+          facile avec Institute</span
+        >
+
+        <!-- description -->
+        <p class="fs-4">
+          Une plateforme qui propose des enseignements dans plusieurs domaines
+          de façon interactive.
+        </p>
+
+        <!-- button -->
+        <div class="mt-3">
+          <button
+            mat-stroked-button
+            class="rounded-pill mw-400 w-100 border-primary fs-5 p-3"
+            color="primary"
+          >
+            Rejoindre gratuitement
+          </button>
+        </div>
+      </div>
+
+      <!-- image -->
+      <div class="flex-fill">
+        <img
+          class="img-fluid"
+          src="../../../../assets/images/Hero-section.svg"
+          alt=""
+          srcset=""
+        />
+      </div>
+    </div>
+
+    <!-- divider -->
+    <mat-divider class="mb-4"></mat-divider>
+
+    <!-- search bar section -->
+    <div class="container mt-4 d-flex flex-column align-items-center">
+      <!-- text -->
+      <span class="mb-3 fs-4 text-dark text-center"
+        >Accédez à nos ressources d'apprentissage</span
+      >
+
+      <!-- search bar -->
+      <div class="row w-100 max-width-1000 mb-4">
+        <div class="col-sm-9">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Mot clé</mat-label>
+            <input matInput ngModel placeholder="Mot clé" />
+            <mat-icon matPrefix class="text-secondary">search</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-3">
+          <button
+            mat-raised-button
+            style="height: 56px !important"
+            class="primary-dark-button w-100"
+          >
+            Rechercher
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- institute presentation -->
+    <div class="mb-4 pt-5 pb-3 bg-blue-light">
+      <div class="container">
+        <!-- stats -->
+        <div class="mb-5">
+          <!-- header -->
+          <div class="mb-5 d-flex flex-column align-items-center">
+            <span class="fw-semibold fs-3 text-dark mb-2"
+              >Nos statistiques</span
+            >
+            <span class="text-secondary">Pour vous encourager</span>
+          </div>
+          <!-- content -->
+          <div class="row">
+            <!-- utilisateurs -->
+            <div
+              class="col-md-6 col-lg-3 d-flex align-items-center flex-column mb-3"
+            >
+              <span class="text-stat mb-1">+15K</span>
+              <span class="">Utilisateurs</span>
+            </div>
+
+            <!-- success -->
+            <div
+              class="col-md-6 col-lg-3 d-flex align-items-center flex-column mb-3"
+            >
+              <span class="text-stat mb-1">75%</span>
+              <span class="">succès total</span>
+            </div>
+
+            <!-- Formateurs -->
+            <div
+              class="col-md-6 col-lg-3 d-flex flex-column align-items-center mb-3"
+            >
+              <span class="text-stat mb-1">+26</span>
+              <span class="">Formateurs</span>
+            </div>
+
+            <!-- Domaines -->
+            <div
+              class="col-md-6 col-lg-3 d-flex flex-column align-items-center mb-3"
+            >
+              <span class="text-stat mb-1">16</span>
+              <span class="">Domaines</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- device -->
+        <div class="mb-3">
+          <!-- text section -->
+          <div class="pt-5 mb-5 d-flex flex-column align-items-center">
+            <!-- title -->
+            <span class="fs-4 mb-2"
+              ><span class="text-dark fw-semibold me-2">C'est quoi</span>
+              <span class="primar-color fw-semibold">INSTITUTE</span></span
+            >
+
+            <!-- description -->
+            <p class="fs-5 text-secondary text-center">
+              Institute est une plateforme éducative et interactive mise à votre
+              <br />
+              disposition pour vous permettre d'apprendre
+            </p>
+          </div>
+
+          <!-- card section -->
+          <div class="row pt-2">
+            <!-- file -->
+            <div class="col-md-4 mb-5 pt-3">
+              <div
+                class="p-4 rounded-3 bg-white shadow d-flex flex-column align-items-center"
+              >
+                <!-- icon -->
+                <img
+                  class=""
+                  width="150"
+                  src="../../../../assets/images/icon-file.svg"
+                  alt=""
+                  srcset=""
+                  style="margin-top: -85px"
+                />
+                <!-- title -->
+                <span class="fs-4 text-center mb-3"
+                  >Grande quantité de cours disponibles</span
+                >
+                <!-- description -->
+                <p class="text-secondary text-center">
+                  Explorez le catalogue des cours, simple à suivre, repertoriés
+                  par domaines et surtout avec des echanges interactifs.
+                </p>
+              </div>
+            </div>
+
+            <!-- calendar -->
+            <div class="col-md-4 mb-5 pt-3">
+              <div
+                class="p-4 bg-white rounded-3 shadow d-flex flex-column align-items-center"
+              >
+                <!-- icon -->
+                <img
+                  class=""
+                  width="150"
+                  src="../../../../assets/images/icon-calendar.svg"
+                  alt=""
+                  srcset=""
+                  style="margin-top: -85px"
+                />
+                <!-- title -->
+                <span class="fs-4 text-center mb-3"
+                  >Suivi de l'évolution des apprenants</span
+                >
+                <!-- description -->
+                <p class="text-secondary text-center">
+                  Avec un espace utilisateur dedié à chaque apprenant avec la
+                  possibilité d'être évaluer par des quiz sur des cours
+                </p>
+              </div>
+            </div>
+
+            <!-- like -->
+            <div class="col-md-4 pt-3">
+              <div
+                class="p-4 bg-white rounded-3 shadow d-flex flex-column align-items-center"
+              >
+                <!-- icon -->
+                <img
+                  class=""
+                  width="150"
+                  src="../../../../assets/images/icon-like.svg"
+                  alt=""
+                  srcset=""
+                  style="margin-top: -85px"
+                />
+                <!-- title -->
+                <span class="fs-4 text-center mb-3"
+                  >Recommandation des cours aux apprenants</span
+                >
+                <!-- description -->
+                <p class="text-secondary text-center">
+                  Les cours peuvent être recommandés aux utilisateurs en
+                  fonction du domaine et de plusieurs autres critères,
+                  préferences.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- domain section -->
+    <div class="mb-5 container">
+      <!-- header -->
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <span class="fs-4 fw-semibold text-dark">Domaines</span>
+        <button mat-button class="rounded-pill">
+          <div class="d-flex align-items-center">
+            Voir tout
+            <mat-icon class="ms-3 text-secondary">arrow_forward</mat-icon>
+          </div>
+        </button>
+      </div>
+
+      <!-- content -->
+      <div class="row">
+        <div class="col-md-6 col-lg-3">
+          <app-domain-card [domain]="null"></app-domain-card>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <app-domain-card [domain]="null"></app-domain-card>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <app-domain-card [domain]="null"></app-domain-card>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <app-domain-card [domain]="null"></app-domain-card>
+        </div>
+      </div>
+    </div>
+
+    <!-- divider -->
+    <mat-divider class="mb-5"></mat-divider>
+
+    <!-- course section -->
+    <div class="container mb-5">
+      <!-- header -->
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex flex-column">
+          <span class="fs-4 fw-semibold text-dark mb-1"
+            >Explorez les cours</span
+          >
+          <span class="text-secondary">Les plus populaires</span>
+        </div>
+        <button mat-button class="rounded-pill">
+          <div class="d-flex align-items-center">
+            Voir tout
+            <mat-icon class="ms-3 text-secondary">arrow_forward</mat-icon>
+          </div>
+        </button>
+      </div>
+
+      <!-- content -->
+      <div class="row">
+        <div class="col-md-4">
+          <app-course-card [course]="null"></app-course-card>
+        </div>
+        <div class="col-md-4">
+          <app-course-card [course]="null"></app-course-card>
+        </div>
+        <div class="col-md-4">
+          <app-course-card [course]="null"></app-course-card>
+        </div>
+        <div class="col-md-4">
+          <app-course-card [course]="null"></app-course-card>
+        </div>
+        <div class="col-md-4">
+          <app-course-card [course]="null"></app-course-card>
+        </div>
+        <div class="col-md-4">
+          <app-course-card [course]="null"></app-course-card>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- End content -->
+
+  <!-- ==== footer ==== -->
+  <app-footer></app-footer>
+  <!-- End footer -->
+</body>
