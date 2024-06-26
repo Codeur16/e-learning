@@ -238,15 +238,10 @@ const suivicours = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    // currentChapitreId: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true,
-    //   onDelete: "SET NULL",
-    // },
     chapitresCompletes: {
-      type: DataTypes.JSON, // Modification ici
+      type: DataTypes.STRING, // Modification ici
       allowNull: true,
-      defaultValue: [],
+      defaultValue: "[]",
     },
   });
 
