@@ -7,69 +7,69 @@ const sendResponse = (res, statusCode, message, data = null) => {
 };
 
 
-// const createChapitre = async (req, res) => {
-//   const coursId = req.params.idcours;
-
-//   try {
-//     const cours = await CoursTable.findByPk(coursId);
-//     if (!cours) {
-//       return sendResponse(res, 201, "Cours inexistant");
-//     }
-
-//     const chapitre = await ChapitreTable.create({
-//       ...req.body,
-//       coursId: coursId,
-//     });
-
-//     sendResponse(
-//       res,
-//       201,
-//       `Le chapitre ${chapitre.titre} a été créé avec succès`
-//     );
-//   } catch (error) {
-//     console.error("Erreur lors de la création du chapitre :", error);
-//     sendResponse(res, 500, "Erreur lors de la création du chapitre", error);
-//   }
-// };
 const createChapitre = async (req, res) => {
   const coursId = req.params.idcours;
 
   try {
     const cours = await CoursTable.findByPk(coursId);
     if (!cours) {
-      return sendResponse(res, 404, "Cours inexistant");
+      return sendResponse(res, 201, "Cours inexistant");
     }
 
-    const chapters = req.body.chapters; // Supposons que le tableau de chapitres est dans le corps de la requête
-
-    if (!Array.isArray(chapters) || chapters.length === 0) {
-      return sendResponse(
-        res,
-        400,
-        "Le tableau de chapitres est vide ou invalide"
-      );
-    }
-
-    const createdChapters = await Promise.all(
-      chapters.map((chapitreData) =>
-        ChapitreTable.create({
-          ...chapitreData,
-          coursId: coursId,
-        })
-      )
-    );
+    const chapitre = await ChapitreTable.create({
+      ...req.body,
+      coursId: coursId,
+    });
 
     sendResponse(
       res,
       201,
-      "Les chapitres ont été créés avec succès",
-      createdChapters
+      `Le chapitre ${chapitre.titre} a été créé avec succès`
     );
   } catch (error) {
-    console.error("Erreur lors de la création des chapitres :", error);
-    sendResponse(res, 500, "Erreur lors de la création des chapitres", error);
+    console.error("Erreur lors de la création du chapitre :", error);
+    sendResponse(res, 500, "Erreur lors de la création du chapitre", error);
   }
 };
+// const createChapitre = async (req, res) => {
+//   const coursId = req.params.idcours;
+
+//   try {
+//     const cours = await CoursTable.findByPk(coursId);
+//     if (!cours) {
+//       return sendResponse(res, 404, "Cours inexistant");
+//     }
+
+//     const chapters = req.body.chapters; // Supposons que le tableau de chapitres est dans le corps de la requête
+
+//     if (!Array.isArray(chapters) || chapters.length === 0) {
+//       return sendResponse(
+//         res,
+//         400,
+//         "Le tableau de chapitres est vide ou invalide"
+//       );
+//     }
+
+//     const createdChapters = await Promise.all(
+//       chapters.map((chapitreData) =>
+//         ChapitreTable.create({
+//           ...chapitreData,
+//           coursId: coursId,
+//         })
+//       )
+//     );
+
+//     sendResponse(
+//       res,
+//       201,
+//       "Les chapitres ont été créés avec succès",
+//       createdChapters
+//     );
+//   } catch (error) {
+//     console.error("Erreur lors de la création des chapitres :", error);
+//     sendResponse(res, 500, "Erreur lors de la création des chapitres", error);
+//   }
+// };
 
 
 const getAllchapitres = async (req, res) => {

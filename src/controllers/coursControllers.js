@@ -34,7 +34,6 @@ const getAllCours = async (req, res) => {
           //as: "etudiants", // Donnez un alias à la relation avec les étudiants
         },
         ,
-       
       ],
     });
     console.log("Tous les cours ont été récupérés avec succès");
@@ -181,7 +180,7 @@ const getCoursBySujetId = async (req, res) => {
               //as: "etudiants", // Donnez un alias à la relation avec les étudiants
             },
           ],
-        }
+        },
 
         // {
         //   model: StudentTable,
@@ -296,7 +295,6 @@ const getStudentCountByCoursId = async (req, res) => {
     );
   }
 };
-
 
 const getCoursByStudentId = async (req, res) => {
   const studentId = req.params.studentId;
