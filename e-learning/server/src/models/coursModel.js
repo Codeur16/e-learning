@@ -1,3 +1,5 @@
+const { DataTypes } = require("sequelize");
+
 const cours = (sequelize, DataTypes) => {
   const Cours = sequelize.define(
     "cours",
@@ -18,6 +20,14 @@ const cours = (sequelize, DataTypes) => {
       nombreModule: {
         type: DataTypes.INTEGER,
         allowNull: false,
+      },
+      niveau: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      langue: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       tempsApprentissage: {
         type: DataTypes.INTEGER,
@@ -101,6 +111,14 @@ const question = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      // repondeUtilisateur: {
+      //   type: DataTypes.STRING,
+      //   allowNull: true,
+      // },
+      // scoreObtenu: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: true,
+      // },
     },
     {
       timestamps: true,
@@ -110,6 +128,39 @@ const question = (sequelize, DataTypes) => {
   );
 
   return Question;
+};
+
+// reponse  model
+const reponseUtilisateur = (sequelize, DataTypes) => {
+  const reponseUtilisateur = sequelize.define(
+    "reposeUtilisateur",
+    {
+      reponseUserId: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      reponseUtilisateur: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      reponseCorrect: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      scoreObtenu: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+    },
+    {
+      timestamps: true,
+      createdAt: true,
+      updateAt: "updateTimestamp",
+    }
+  );
+
+  return reponseUtilisateur;
 };
 // export { cours, evaluation, question };
 
@@ -123,7 +174,7 @@ const chapitre = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      position:{
+      position: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -133,9 +184,12 @@ const chapitre = (sequelize, DataTypes) => {
       },
       textes: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
-
+      duree: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       timestamps: true,
@@ -146,4 +200,59 @@ const chapitre = (sequelize, DataTypes) => {
 
   return chapitre;
 };
-module.exports = { cours, evaluation, question, chapitre };
+// const userCours = (sequelize, DataTypes) => {
+//   const UserCours = sequelize.define(
+//     "UserCours",
+//     {
+//       coursId: {
+//         type: DataTypes.INTEGER,
+//         primaryKey: true,
+//         references: {
+//           model: "cours",
+//           key: "coursId",
+//         },
+//       },
+//       studentId: {
+//         type: DataTypes.INTEGER,
+//         primaryKey: true,
+//         references: {
+//           model: "students",
+//           key: "studentId",
+//         },
+//       },
+//     },
+//     {
+//       timestamps: true,
+//       createdAt: true,
+//       updatedAt: "updateTimestamp",
+//     }
+//   );
+
+//   return UserCours;
+// };
+
+const suivicours = (sequelize, DataTypes) => {
+  const suivicours = sequelize.define("suivicours", {
+    suivicoursId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    // currentChapitreId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    //   onDelete: "SET NULL",
+    // },
+    chapitresCompletes: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER), // Tableau d'IDs des chapitres terminés
+      defaultValue: [],
+    },
+  });
+
+  return suivicours;
+};
+// const suivicours =(sequelize, DataTypes)={
+// const suivicours = sequelize.define("suivicours", );
+// return suivicours;
+// }
+module.exports = { cours, evaluation, question, chapitre, reponseUtilisateur, suivicours };

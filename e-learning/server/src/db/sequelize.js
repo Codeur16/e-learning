@@ -1,133 +1,255 @@
 const { Sequelize, DataTypes } = require("sequelize");
+const dbConfig = require("../configs/db.config");
 // const bcrypt = require("bcrypt");
 
 // importation des models
 
-const { student, formateur } = require("../models/userModel");
+const { student, formateur, admin } = require("../models/userModel");
 const {
   cours,
   evaluation,
   question,
   chapitre,
+  reponseUtilisateur,
+  suivicours
 } = require("../models/coursModel");
-const { domaine } = require("../models/domainModel");
+const { domaine, sujet } = require("../models/domainModel");
+require("dotenv").config();
 
-// configuration de la base de donnees
 let sequelize;
-if (process.env.NODE_ENV === "production") {
+const env = process.env.NODE_ENV;
+console.log("env:", env);
+if (env === "production") {
   sequelize = new Sequelize(
-    "q3km6gfiypm99yap",
-    "fmjzknms6lf6acih",
-    "mpe1lmb1jci8jwzx",
+    "railway",
+    "root",
+    "qxvBWpZdfnvBmhWrEPYIykyTxfAIIDvT",
     {
-      host: "ao9moanwus0rjiex.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-      dialect: "mariadb",
-      dialectOptions: {
-        timezone: "Etc/GMT-1",
-      },
-      logging: true,
+      host: "roundhouse.proxy.rlwy.net",
+      port: 19854,
+      dialect: "mysql",
+      logging: false,
     }
   );
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log("Connection has been established successfully.");
+
+      console.log("DB_NAME:", process.env.DB_NAME);
+      console.log("DB_USER:", process.env.DB_USER);
+      console.log("DB_PASS:", process.env.DB_PASS);
+      console.log("DB_HOST:", process.env.DB_HOST);
+      console.log("DB_PORT:", process.env.DB_PORT);
+    })
+    .catch((err) => {
+      console.log("Unable to connect to the database:", err);
+      console.log("DB_NAME:", process.env.DB_NAME);
+      console.log("DB_USER:", process.env.DB_USER);
+      console.log("DB_PASS:", process.env.DB_PASS);
+      console.log("DB_HOST:", process.env.DB_HOST);
+      console.log("DB_PORT:", process.env.DB_PORT);
+    });
 } else {
-  // sequelize = new Sequelize({
-  //   dialect: "sqlite",
-  //   storage: "./institute", // Chemin vers le fichier SQLite
-  // });
+  sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS,
+    {
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      dialect: "mysql",
+      logging: false,
+    }
+  );
+  sequelize
+    .authenticate()
+    .then(() => {
+      console.log("Connection has been established successfully.");
 
-  // connection a la db en local
-  sequelize = new Sequelize("institute", "root", "", {
-    host: "localhost",
-    dialect: "mariadb",
-    dialectOptions: {
-      timezone: "Etc/GMT-1",
-    },
-    logging: false,
-    define: {
-      maxKeys: 200,
-    },
-  });
+      console.log("DB_NAME:", process.env.DB_NAME);
+      console.log("DB_USER:", process.env.DB_USER);
+      console.log("DB_PASS:", process.env.DB_PASS);
+      console.log("DB_HOST:", process.env.DB_HOST);
+      console.log("DB_PORT:", process.env.DB_PORT);
+    })
+    .catch((err) => {
+      console.log("Unable to connect to the database:", err);
+      console.log("DB_NAME:", process.env.DB_NAME);
+      console.log("DB_USER:", process.env.DB_USER);
+      console.log("DB_PASS:", process.env.DB_PASS);
+      console.log("DB_HOST:", process.env.DB_HOST);
+      console.log("DB_PORT:", process.env.DB_PORT);
+    });
 }
-
-// creation des models
-const DomainTable = domaine(sequelize, DataTypes);
+const DomaineTable = domaine(sequelize, DataTypes);
+const SujetTable = sujet(sequelize, DataTypes);
 const CoursTable = cours(sequelize, DataTypes);
 const EvaluationTable = evaluation(sequelize, DataTypes);
 const QuestionTable = question(sequelize, DataTypes);
 const StudentTable = student(sequelize, DataTypes);
 const FormateurTable = formateur(sequelize, DataTypes);
 const ChapitreTable = chapitre(sequelize, DataTypes);
+//const AdminTable = admin(sequelize, DataTypes);
+const SuivicoursTable = admin(sequelize, DataTypes);
+const ReponseUserTable = reponseUtilisateur(sequelize, DataTypes);
+//const SuivicoursTable = suivicours(sequelize, DataTypes);
 //======================== definition des associations entre les tables:======================================
-// 1) cours et users ========================================
-CoursTable.belongsToMany(StudentTable, { through: "UserCours" });
-StudentTable.belongsToMany(CoursTable, { through: "UserCours" });
 
+// 1) cours et users ========================================
+CoursTable.belongsToMany(StudentTable, {
+  through: "UserCours",
+  onDelete: "CASCADE",
+});
+StudentTable.belongsToMany(CoursTable, {
+  through: "UserCours",
+  onDelete: "CASCADE",
+});
 // 2) cours et evaluations================================
-CoursTable.hasMany(
-  EvaluationTable
-  //   , {
-  //   foreignKey: "clubId",
-  // }
-);
-EvaluationTable.belongsTo(CoursTable);
+ChapitreTable.hasOne(EvaluationTable, {
+  as: "evaluations",
+  foreignKey: "chapitreId",
+  onDelete: "CASCADE",
+});
+EvaluationTable.belongsTo(ChapitreTable, {
+  as: "chapitres",
+  foreignKey: "chapitreId",
+  onDelete: "CASCADE",
+});
 
 //3)  evaluations et questions =============================
-EvaluationTable.hasMany(
-  QuestionTable
-  //   , {
-  //   foreignKey: "clubId",
-  // }
-);
-QuestionTable.belongsTo(EvaluationTable);
+EvaluationTable.hasMany(QuestionTable, {
+  as: "questions",
+  foreignKey: "evaluationId",
+  onDelete: "CASCADE",
+});
+QuestionTable.belongsTo(EvaluationTable, {
+  as: "evaluations",
+  foreignKey: "evaluationId",
+  onDelete: "CASCADE",
+});
+
 //4)  cours et domaines =============================
-DomainTable.hasMany(
-  CoursTable
-  //   , {
-  //   foreignKey: "clubId",
-  // }
-);
-CoursTable.belongsTo(DomainTable);
+SujetTable.hasMany(CoursTable, {
+  as: "cours",
+  foreignKey: "sujetId",
+  onDelete: "CASCADE",
+});
+CoursTable.belongsTo(SujetTable, {
+  as: "sujets",
+  foreignKey: "sujetId",
+  onDelete: "CASCADE",
+});
 
 //5)  cours et formateur =============================
-FormateurTable.hasMany(
- CoursTable
-  //   , {
-  //   foreignKey: "clubId",
-  // }
-);
-CoursTable.belongsTo(FormateurTable);
-//6)  cours et formateur =============================
-DomainTable.hasMany(
- FormateurTable
-  //   , {
-  //   foreignKey: "clubId",
-  // }
-);
-FormateurTable.belongsTo(DomainTable);
-
+FormateurTable.hasMany(CoursTable, {
+  as: "cours",
+  foreignKey: "formateurId",
+  onDelete: "CASCADE",
+});
+CoursTable.belongsTo(FormateurTable, {
+  as: "formateurs",
+  foreignKey: "formateurId",
+  onDelete: "CASCADE",
+});
+//6)  domain   et formateur =============================
+DomaineTable.hasMany(FormateurTable, {
+  as: "formateurs",
+  foreignKey: "domaineId",
+  onDelete: "CASCADE",
+});
+FormateurTable.belongsTo(DomaineTable, {
+  as: "domaines",
+  foreignKey: "domaineId",
+  onDelete: "CASCADE",
+});
 //7)  cours et chapitres =============================
-CoursTable.hasMany(
- ChapitreTable
-  //   , {
-  //   foreignKey: "clubId",
-  // }
-);
-ChapitreTable.belongsTo(CoursTable);
+CoursTable.hasMany(ChapitreTable, {
+  as: "chapitres",
+  foreignKey: "coursId",
+  onDelete: "CASCADE",
+});
+ChapitreTable.belongsTo(CoursTable, {
+  as: "cours",
+  foreignKey: "coursId",
+  onDelete: "CASCADE",
+});
+// 8) sujet et domain
+DomaineTable.hasMany(SujetTable, {
+  as: "sujets",
+  foreignKey: "domaineId",
+  onDelete: "CASCADE",
+});
+SujetTable.belongsTo(DomaineTable, {
+  as: "domaines",
+  foreignKey: "domaineId",
+  onDelete: "CASCADE",
+});
+// 9) question et reponse utilisateur
 
+QuestionTable.hasOne(ReponseUserTable, {
+  as: "reposeUtilisateurs",
+  foreignKey: "questionId",
+  onDelete: "CASCADE",
+});
+ReponseUserTable.belongsTo(QuestionTable, {
+  as: "questions",
+  foreignKey: "questionId",
+});
+
+// 10 ) reponses et students
+StudentTable.hasMany(ReponseUserTable, {
+  as: "reposeUtilisateurs",
+  foreignKey: "studentId",
+  onDelete: "CASCADE",
+});
+ReponseUserTable.belongsTo(StudentTable, {
+  as: "student",
+  foreignKey: "studentId",
+});
+
+// 11) suivi cours
+// Définir les associations entre les tables
+StudentTable.hasMany(SuivicoursTable, {
+  as: 'suivicours',
+  foreignKey: 'studentId',
+  onDelete: 'CASCADE',
+});
+SuivicoursTable.belongsTo(StudentTable, {
+  as: 'student',
+  foreignKey: 'studentId',
+});
+
+CoursTable.hasMany(SuivicoursTable, {
+  as: "suivicours",
+  foreignKey: "coursId",
+  onDelete: "CASCADE",
+});
+SuivicoursTable.belongsTo(CoursTable, {
+  as: 'cours',
+  foreignKey: 'coursId',
+});
+
+ChapitreTable.hasMany(SuivicoursTable, {
+  as: "currentChapitre",
+  foreignKey: "currentChapitreId",
+  onDelete: "SET NULL",
+});
+SuivicoursTable.belongsTo(ChapitreTable, {
+  as: 'currentChapitre',
+  foreignKey: 'currentChapitreId',
+});
 
 //association de la baase de donnees
 
-function initDB() {
+async function initDB() {
   console.log("Initialisation des tables de la base de données");
-  return sequelize
-    .sync(
-      //{ force: true }
-      )
-    .then(() => {
-      console.log("Tables have been created");
-    })
-    .catch((error) => {
-      console.error("Unable to create tables:", error);
-    });
+  try {
+    await sequelize.sync({ alter: true });
+    console.log("Tables have been created");
+  } catch (error) {
+    console.error("Unable to create tables:", error);
+  }
 }
 
 module.exports = {
@@ -137,8 +259,12 @@ module.exports = {
   CoursTable,
   QuestionTable,
   StudentTable,
-  DomainTable,
+  DomaineTable,
   FormateurTable,
+  SujetTable,
+  ChapitreTable,
+  ReponseUserTable,
+  SuivicoursTable
 };
 
 // .then(_=>{
