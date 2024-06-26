@@ -1,3 +1,5 @@
+const { DataTypes } = require("sequelize");
+
 const cours = (sequelize, DataTypes) => {
   const Cours = sequelize.define(
     "cours",
@@ -19,10 +21,18 @@ const cours = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      niveau: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      langue: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       tempsApprentissage: {
         type: DataTypes.INTEGER,
         allowNull: false,
-      }
+      },
     },
     {
       timestamps: true,
@@ -164,7 +174,7 @@ const chapitre = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      position:{
+      position: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -176,11 +186,10 @@ const chapitre = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      duree:{
+      duree: {
         type: DataTypes.INTEGER,
         allowNull: true,
-      }
-
+      },
     },
     {
       timestamps: true,
@@ -222,4 +231,47 @@ const chapitre = (sequelize, DataTypes) => {
 //   return UserCours;
 // };
 
+const suivicours = (sequelize, DataTypes) => {
+  const suivicours = sequelize.define("suivicours", {
+    suivicoursId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    coursId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: CoursTable,
+        key: "id",
+      },
+      onDelete: "CASCADE",
+    },
+    studentId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: StudentTable,
+        key: "id",
+      },
+      onDelete: "CASCADE",
+    },
+    currentChapitreId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: ChapitreTable,
+        key: "id",
+      },
+      onDelete: "SET NULL",
+    },
+    chapitresCompletes: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER), // Tableau d'IDs des chapitres terminés
+      defaultValue: [],
+    },
+  });
+
+  return suivicours;
+};
+// const suivicours =(sequelize, DataTypes)={
+// const suivicours = sequelize.define("suivicours", );
+// return suivicours;
+// }
 module.exports = { cours, evaluation, question, chapitre, reponseUtilisateur };

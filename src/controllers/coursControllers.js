@@ -197,6 +197,55 @@ const getCoursBySujetId = async (req, res) => {
     sendResponse(res, 500, "Erreur lors de la récupération des cours", error);
   }
 };
+
+const getCoursByFormateurId = async (req, res) => {
+  const formateurId = req.params.formateurId;
+
+  try {
+    const formateur = await FormateurTable.findByPk(formateurId, {
+      include: [
+        {
+          model: CoursTable,
+          as: "cours",
+          include: [
+            {
+              model: SujetTable,
+              as: "sujets",
+              include: [
+                {
+                  model: DomaineTable, // Incluez le modèle DomaineTable
+                  as: "domaines", // Donnez un alias à la relation avec le domaine
+                },
+              ],
+            },
+            {
+              model: FormateurTable,
+              as: "formateurs",
+            },
+            {
+              model: StudentTable, // Ajoutez ceci pour inclure la table des étudiants
+              //as: "etudiants", // Donnez un alias à la relation avec les étudiants
+            },
+          ],
+        },
+
+        // {
+        //   model: StudentTable,
+        // },
+      ],
+    });
+
+    if (!formateur) {
+      return sendResponse(res, 201, "formateur non trouvé");
+    }
+
+    const message = "Cours récupérés avec succès";
+    sendResponse(res, 200, message, formateur.cours);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des cours :", error);
+    sendResponse(res, 500, "Erreur lors de la récupération des cours", error);
+  }
+};
 const getStudentCountByCoursId = async (req, res) => {
   const coursId = req.params.coursId;
 
@@ -253,4 +302,5 @@ module.exports = {
   deleteCours,
   getCoursBySujetId,
   getStudentCountByCoursId,
+  getCoursByFormateurId,
 };
