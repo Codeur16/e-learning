@@ -3,7 +3,7 @@ const {
   FormateurTable,
   SujetTable,
   StudentTable,
-  DomaineTable
+  DomaineTable,
 } = require("../db/sequelize");
 
 const sendResponse = (res, statusCode, message, data = null) => {
@@ -158,8 +158,27 @@ const getCoursBySujetId = async (req, res) => {
         {
           model: CoursTable,
           as: "cours",
+          include: [
+            {
+              model: SujetTable,
+              as: "sujets",
+              include: [
+                {
+                  model: DomaineTable, // Incluez le modèle DomaineTable
+                  as: "domaines", // Donnez un alias à la relation avec le domaine
+                },
+              ],
+            },
+            {
+              model: FormateurTable,
+              as: "formateurs",
+            },
+            {
+              model: StudentTable, // Ajoutez ceci pour inclure la table des étudiants
+              //as: "etudiants", // Donnez un alias à la relation avec les étudiants
+            },
+          ],
         },
-       
 
         // {
         //   model: StudentTable,
@@ -225,7 +244,6 @@ const getStudentCountByCoursId = async (req, res) => {
     );
   }
 };
-
 
 module.exports = {
   getAllCours,
