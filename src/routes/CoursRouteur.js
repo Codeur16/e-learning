@@ -298,6 +298,7 @@ const {
   getCoursBySujetId,
   getStudentCountByCoursId,
   getCoursByFormateurId,
+  getCoursByStudentId,
 } = require("../controllers/coursControllers");
 const {
   addStudentToCours,
@@ -316,6 +317,7 @@ router.delete("/delete/:id", deleteCours);
 router.get("/getBySujet/:sujetId", getCoursBySujetId);
 router.get("/getStudentCount/:coursId", getStudentCountByCoursId);
 router.get("/getByFormateur/:formateurId", getCoursByFormateurId);
+router.get("/getByStudent/:studentId", getCoursByStudentId);
 // Ajouter un étudiant à un cours
 router.post("/addStudentToCours", addStudentToCours);
 

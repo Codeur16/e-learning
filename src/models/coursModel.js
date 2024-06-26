@@ -238,30 +238,11 @@ const suivicours = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    coursId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: CoursTable,
-        key: "id",
-      },
-      onDelete: "CASCADE",
-    },
-    studentId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: StudentTable,
-        key: "id",
-      },
-      onDelete: "CASCADE",
-    },
-    currentChapitreId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: ChapitreTable,
-        key: "id",
-      },
-      onDelete: "SET NULL",
-    },
+    // currentChapitreId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    //   onDelete: "SET NULL",
+    // },
     chapitresCompletes: {
       type: DataTypes.ARRAY(DataTypes.INTEGER), // Tableau d'IDs des chapitres terminés
       defaultValue: [],
@@ -274,4 +255,4 @@ const suivicours = (sequelize, DataTypes) => {
 // const suivicours = sequelize.define("suivicours", );
 // return suivicours;
 // }
-module.exports = { cours, evaluation, question, chapitre, reponseUtilisateur };
+module.exports = { cours, evaluation, question, chapitre, reponseUtilisateur, suivicours };

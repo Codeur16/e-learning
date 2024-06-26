@@ -11,6 +11,7 @@ const {
   question,
   chapitre,
   reponseUtilisateur,
+  suivicours
 } = require("../models/coursModel");
 const { domaine, sujet } = require("../models/domainModel");
 require("dotenv").config();
@@ -89,8 +90,10 @@ const QuestionTable = question(sequelize, DataTypes);
 const StudentTable = student(sequelize, DataTypes);
 const FormateurTable = formateur(sequelize, DataTypes);
 const ChapitreTable = chapitre(sequelize, DataTypes);
-const AdminTable = admin(sequelize, DataTypes);
+//const AdminTable = admin(sequelize, DataTypes);
+const SuivicoursTable = admin(sequelize, DataTypes);
 const ReponseUserTable = reponseUtilisateur(sequelize, DataTypes);
+//const SuivicoursTable = suivicours(sequelize, DataTypes);
 //======================== definition des associations entre les tables:======================================
 
 // 1) cours et users ========================================
@@ -204,6 +207,39 @@ ReponseUserTable.belongsTo(StudentTable, {
   as: "student",
   foreignKey: "studentId",
 });
+
+// 11) suivi cours
+// Définir les associations entre les tables
+StudentTable.hasMany(SuivicoursTable, {
+  as: 'suivicours',
+  foreignKey: 'studentId',
+  onDelete: 'CASCADE',
+});
+SuivicoursTable.belongsTo(StudentTable, {
+  as: 'student',
+  foreignKey: 'studentId',
+});
+
+CoursTable.hasMany(SuivicoursTable, {
+  as: "suivicours",
+  foreignKey: "coursId",
+  onDelete: "CASCADE",
+});
+SuivicoursTable.belongsTo(CoursTable, {
+  as: 'cours',
+  foreignKey: 'coursId',
+});
+
+ChapitreTable.hasMany(SuivicoursTable, {
+  as: "currentChapitre",
+  foreignKey: "currentChapitreId",
+  onDelete: "SET NULL",
+});
+SuivicoursTable.belongsTo(ChapitreTable, {
+  as: 'currentChapitre',
+  foreignKey: 'currentChapitreId',
+});
+
 //association de la baase de donnees
 
 async function initDB() {
@@ -227,8 +263,8 @@ module.exports = {
   FormateurTable,
   SujetTable,
   ChapitreTable,
-  AdminTable,
   ReponseUserTable,
+  SuivicoursTable
 };
 
 // .then(_=>{

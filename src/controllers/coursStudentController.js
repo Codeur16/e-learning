@@ -95,7 +95,7 @@ const getCoursForStudent = async (req, res) => {
 
   try {
     const student = await StudentTable.findByPk(studentId, {
-      include: Cours,
+      include: CoursTable,
     });
     if (!student) {
       return sendResponse(res, 201, "Étudiant non trouvé");
