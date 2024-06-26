@@ -319,7 +319,7 @@ router.get("/getStudentCount/:coursId", getStudentCountByCoursId);
 router.get("/getByFormateur/:formateurId", getCoursByFormateurId);
 router.get("/getByStudent/:studentId", getCoursByStudentId);
 // Ajouter un étudiant à un cours
-router.post("/addStudentToCours", addStudentToCours);
+router.post("/addStudentToCours/:studentId/:coursId", addStudentToCours);
 
 // Supprimer un étudiant d'un cours
 router.post("/removeStudentFromCours", removeStudentFromCours);

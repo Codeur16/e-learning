@@ -33,7 +33,7 @@ const addStudentToCours = async (req, res) => {
 
 
 const removeStudentFromCours = async (req, res) => {
-  const { studentId, coursId } = req.body;
+  const { studentId, coursId } = req.params;
 
   try {
     const student = await StudentTable.findByPk(studentId);
