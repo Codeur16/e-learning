@@ -244,7 +244,8 @@ const suivicours = (sequelize, DataTypes) => {
     //   onDelete: "SET NULL",
     // },
     chapitresCompletes: {
-      type: DataTypes.ARRAY(DataTypes.INTEGER), // Tableau d'IDs des chapitres terminés
+      type: DataTypes.JSON, // Modification ici
+      allowNull: true,
       defaultValue: [],
     },
   });

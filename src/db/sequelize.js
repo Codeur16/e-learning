@@ -90,10 +90,9 @@ const QuestionTable = question(sequelize, DataTypes);
 const StudentTable = student(sequelize, DataTypes);
 const FormateurTable = formateur(sequelize, DataTypes);
 const ChapitreTable = chapitre(sequelize, DataTypes);
-//const AdminTable = admin(sequelize, DataTypes);
-const SuivicoursTable = admin(sequelize, DataTypes);
+const AdminTable = admin(sequelize, DataTypes);
 const ReponseUserTable = reponseUtilisateur(sequelize, DataTypes);
-//const SuivicoursTable = suivicours(sequelize, DataTypes);
+const SuivicoursTable = suivicours(sequelize, DataTypes);
 //======================== definition des associations entre les tables:======================================
 
 // 1) cours et users ========================================

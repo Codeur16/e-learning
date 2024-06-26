@@ -5,7 +5,8 @@ const sendResponse = (res, statusCode, message, data = null) => {
 };
 
 const addStudentToCours = async (req, res) => {
-  const { studentId, coursId } = req.body;
+   const studentId = req.params.studentId;
+   const coursId = req.params.coursId; 
 
   try {
     const student = await StudentTable.findByPk(studentId);
@@ -33,7 +34,8 @@ const addStudentToCours = async (req, res) => {
 
 
 const removeStudentFromCours = async (req, res) => {
-  const { studentId, coursId } = req.params;
+  const studentId = req.params.studentId;
+  const coursId = req.params.coursId; 
 
   try {
     const student = await StudentTable.findByPk(studentId);
@@ -64,17 +66,17 @@ const removeStudentFromCours = async (req, res) => {
 
 
 const getStudentsInCours = async (req, res) => {
-  const { coursId } = req.params;
+  const coursId = req.params.coursId; 
 
   try {
     const cours = await CoursTable.findByPk(coursId, {
-      include: Student,
+      include: StudentTable,
     });
     if (!cours) {
       return sendResponse(res, 201, "Cours non trouvé");
     }
 
-    sendResponse(res, 200, "Étudiants récupérés avec succès", CoursTable.students);
+    sendResponse(res, 200, "Étudiants récupérés avec succès", CoursTable);
   } catch (error) {
     console.error(
       "Erreur lors de la récupération des étudiants du cours :",
