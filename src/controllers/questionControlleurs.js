@@ -9,17 +9,31 @@ const {
 const addQuestionToEvaluation = async (req, res) => {
   try {
     const evaluation = await EvaluationTable.findByPk(req.params.evaluationId);
-    if (evaluation) {
-      const question = await QuestionTable.create({
-        ...req.body,
-        evaluationId: req.params.evaluationId,
-      });
-      res.status(201).json(question);
-    } else {
-      res.status(201).json({ error: "Evaluation not found" });
+
+    if (!evaluation) {
+      return res.status(404).json({ error: "Évaluation non trouvée" });
     }
+
+    const questions = req.body.questions; // Supposons que le tableau de questions est dans req.body.questions
+
+    if (!Array.isArray(questions) || questions.length === 0) {
+      return res.status(400).json({ error: "Aucune question à ajouter" });
+    }
+
+    // Utilisez Promise.all pour ajouter toutes les questions
+    const createdQuestions = await Promise.all(
+      questions.map((question) =>
+        QuestionTable.create({
+          ...question,
+          evaluationId: req.params.evaluationId,
+        })
+      )
+    );
+
+    res.status(201).json(createdQuestions);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Erreur lors de l'ajout des questions :", error);
+    res.status(500).json({ error: "Erreur lors de l'ajout des questions" });
   }
 };
 
@@ -47,14 +61,13 @@ const deleteQuestionInEvaluation = async (req, res) => {
   try {
     const evaluation = await EvaluationTable.findByPk(req.params.evaluationId);
     if (evaluation) {
-        const question = await QuestionTable.findByPk(req.params.questionId);
-        if (question) {
-          await question.destroy();
-          res.status(200).json({ message: "Question deleted" });
-        } else {
-          res.status(201).json({ error: "Question not found" });
-        }
-      
+      const question = await QuestionTable.findByPk(req.params.questionId);
+      if (question) {
+        await question.destroy();
+        res.status(200).json({ message: "Question deleted" });
+      } else {
+        res.status(201).json({ error: "Question not found" });
+      }
     } else {
       res.status(201).json({ error: "Evaluation not found" });
     }
@@ -63,9 +76,8 @@ const deleteQuestionInEvaluation = async (req, res) => {
   }
 };
 
-
 module.exports = {
-    addQuestionToEvaluation,
+  addQuestionToEvaluation,
   updateQuestionInEvaluation,
   deleteQuestionInEvaluation,
 };
