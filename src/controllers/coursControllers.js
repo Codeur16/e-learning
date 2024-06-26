@@ -4,6 +4,7 @@ const {
   SujetTable,
   StudentTable,
   DomaineTable,
+  ChapitreTable,
 } = require("../db/sequelize");
 
 const sendResponse = (res, statusCode, message, data = null) => {
@@ -31,6 +32,11 @@ const getAllCours = async (req, res) => {
         {
           model: StudentTable, // Ajoutez ceci pour inclure la table des étudiants
           //as: "etudiants", // Donnez un alias à la relation avec les étudiants
+        },
+        ,
+        {
+          model: ChapitreTable,
+          as: "chapitre",
         },
       ],
     });
@@ -179,6 +185,10 @@ const getCoursBySujetId = async (req, res) => {
             },
           ],
         },
+        {
+          model: ChapitreTable,
+          as:"chapitre"
+        }
 
         // {
         //   model: StudentTable,
