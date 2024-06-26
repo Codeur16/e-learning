@@ -99,7 +99,7 @@ const question = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      image: {
+      option: {
         type: DataTypes.STRING,
         allowNull: false,
       },
